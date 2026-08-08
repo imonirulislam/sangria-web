@@ -86,9 +86,23 @@ const socials = [
       class="mx-auto flex max-w-6xl flex-col items-center justify-between gap-3 px-6 py-6 text-sm text-neutral-500 sm:flex-row"
     >
       <p>© {year} {SITE.name}. Open team chat.</p>
-      <p class="flex items-center gap-1.5">
-        <span class="size-1.5 rounded-full bg-emerald-500"></span> Self-hostable
-      </p>
+      <div class="flex flex-wrap items-center justify-center gap-x-4 gap-y-1.5">
+        <span class="flex items-center gap-1">
+          Built with
+          <Icon name="heart" class="size-3.5 fill-current text-brand-500" />
+          using
+          <a
+            href="https://astro.build"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="font-medium text-neutral-600 transition-colors hover:text-neutral-900 dark:text-neutral-400 dark:hover:text-white"
+            >Astro</a
+          >
+        </span>
+        <span class="flex items-center gap-1.5">
+          <span class="size-1.5 rounded-full bg-emerald-500"></span> Self-hostable
+        </span>
+      </div>
     </div>
   </div>
 </footer>
