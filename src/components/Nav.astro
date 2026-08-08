@@ -1,5 +1,5 @@
 ---
-import { SITE, NAV_LINKS } from "../data/content";
+import { SITE } from "../data/content";
 import ThemeToggle from "./ThemeToggle.astro";
 
 const path = Astro.url.pathname;
@@ -22,31 +22,33 @@ const isActive = (href: string) =>
       <span class="text-lg tracking-tight">{SITE.name}</span>
     </a>
 
-    <div class="flex items-center gap-1">
-      <div class="mr-1 hidden items-center gap-0.5 sm:flex">
-        {
-          NAV_LINKS.map((link) => (
-            <a
-              href={link.href}
-              class:list={[
-                "rounded-lg px-3 py-2 text-sm font-medium transition-colors",
-                isActive(link.href)
-                  ? "text-brand-700 dark:text-brand-300"
-                  : "text-neutral-600 hover:bg-neutral-100 hover:text-neutral-900 dark:text-neutral-300 dark:hover:bg-white/5 dark:hover:text-white",
-              ]}
-            >
-              {link.label}
-            </a>
-          ))
-        }
-      </div>
-      <ThemeToggle />
+    <div class="flex items-center gap-2">
+      {/* Secondary button */}
+      <a
+        href="/features"
+        class:list={[
+          "hidden items-center rounded-lg border px-3.5 py-2 text-sm font-medium transition-colors sm:inline-flex",
+          isActive("/features")
+            ? "border-brand-200 bg-brand-50 text-brand-700 dark:border-brand-400/30 dark:bg-brand-500/10 dark:text-brand-300"
+            : "border-neutral-200/80 bg-white/60 text-neutral-700 hover:border-neutral-300 hover:bg-white dark:border-white/10 dark:bg-white/5 dark:text-neutral-200 dark:hover:bg-white/10",
+        ]}
+      >
+        Features
+      </a>
+
+      {/* Primary CTA */}
       <a
         href="/download"
-        class="ml-1 rounded-lg bg-gradient-to-b from-brand-600 to-brand-700 px-4 py-2 text-sm font-semibold text-white shadow-sm shadow-brand-700/25 transition-all duration-200 hover:-translate-y-px hover:shadow-md hover:shadow-brand-700/30"
+        class:list={[
+          "inline-flex items-center rounded-lg bg-gradient-to-b from-brand-600 to-brand-700 px-4 py-2 text-sm font-semibold text-white shadow-sm shadow-brand-700/25 ring-1 ring-inset ring-white/15 transition-all duration-200 hover:-translate-y-px hover:from-brand-500 hover:shadow-md hover:shadow-brand-700/30 active:translate-y-0 active:shadow-sm",
+          isActive("/download") && "ring-white/30",
+        ]}
       >
         Download
       </a>
+
+      <span class="mx-0.5 hidden h-6 w-px bg-neutral-200 sm:block dark:bg-white/10"></span>
+      <ThemeToggle />
     </div>
   </nav>
 </header>

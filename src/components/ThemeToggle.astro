@@ -10,40 +10,51 @@ const linux = icons.siLinux?.path ?? "";
 const android = icons.siAndroid?.path ?? "";
 ---
 
-<button
-  data-theme-toggle
-  type="button"
-  aria-label="Switch theme (light, dark, system)"
-  title="Theme"
-  class="flex size-9 items-center justify-center rounded-lg text-neutral-600 transition-colors hover:bg-neutral-100 hover:text-neutral-900 dark:text-neutral-300 dark:hover:bg-neutral-800 dark:hover:text-white"
->
-  <span data-theme-icon="light" class="hidden"><Icon name="sun" class="size-5" /></span>
-  <span data-theme-icon="dark" class="hidden"><Icon name="moon" class="size-5" /></span>
-  {/* System mode: the script reveals the one matching the visitor's OS. */}
-  <span data-theme-icon="system">
-    <span data-os-icon="apple" class="hidden">
-      <svg viewBox="0 0 24 24" class="size-5" fill="currentColor" aria-hidden="true"
-        ><path d={apple} /></svg
-      >
+<div class="group/tt relative">
+  <button
+    data-theme-toggle
+    type="button"
+    aria-label="Switch theme (light, dark, system)"
+    class="flex size-9 items-center justify-center rounded-lg text-neutral-600 transition-colors hover:bg-neutral-100 hover:text-neutral-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500/40 dark:text-neutral-300 dark:hover:bg-neutral-800 dark:hover:text-white"
+  >
+    <span data-theme-icon="light" class="hidden"><Icon name="sun" class="size-5" /></span>
+    <span data-theme-icon="dark" class="hidden"><Icon name="moon" class="size-5" /></span>
+    {/* System mode: the script reveals the one matching the visitor's OS. */}
+    <span data-theme-icon="system">
+      <span data-os-icon="apple" class="hidden">
+        <svg viewBox="0 0 24 24" class="size-5" fill="currentColor" aria-hidden="true"
+          ><path d={apple} /></svg
+        >
+      </span>
+      <span data-os-icon="linux" class="hidden">
+        <svg viewBox="0 0 24 24" class="size-5" fill="currentColor" aria-hidden="true"
+          ><path d={linux} /></svg
+        >
+      </span>
+      <span data-os-icon="android" class="hidden">
+        <svg viewBox="0 0 24 24" class="size-5" fill="currentColor" aria-hidden="true"
+          ><path d={android} /></svg
+        >
+      </span>
+      <span data-os-icon="other"><Icon name="monitor" class="size-5" /></span>
     </span>
-    <span data-os-icon="linux" class="hidden">
-      <svg viewBox="0 0 24 24" class="size-5" fill="currentColor" aria-hidden="true"
-        ><path d={linux} /></svg
-      >
-    </span>
-    <span data-os-icon="android" class="hidden">
-      <svg viewBox="0 0 24 24" class="size-5" fill="currentColor" aria-hidden="true"
-        ><path d={android} /></svg
-      >
-    </span>
-    <span data-os-icon="other"><Icon name="monitor" class="size-5" /></span>
+  </button>
+
+  {/* Hint — shows the active mode; appears on hover or keyboard focus. */}
+  <span
+    role="tooltip"
+    data-theme-label
+    class="pointer-events-none absolute left-1/2 top-full z-50 mt-2 -translate-x-1/2 translate-y-1 whitespace-nowrap rounded-md bg-neutral-900 px-2 py-1 text-xs font-medium text-white opacity-0 shadow-lg transition-all duration-150 group-hover/tt:translate-y-0 group-hover/tt:opacity-100 group-focus-within/tt:translate-y-0 group-focus-within/tt:opacity-100 dark:bg-white dark:text-neutral-900"
+  >
+    System theme
   </span>
-</button>
+</div>
 
 <script>
   type Mode = "light" | "dark" | "system";
   const KEY = "theme";
   const media = window.matchMedia("(prefers-color-scheme: dark)");
+  const label = document.querySelector<HTMLElement>("[data-theme-label]");
 
   const getMode = (): Mode => (localStorage.getItem(KEY) as Mode) || "system";
 
@@ -53,6 +64,7 @@ const android = icons.siAndroid?.path ?? "";
     document.querySelectorAll<HTMLElement>("[data-theme-icon]").forEach((el) => {
       el.classList.toggle("hidden", el.dataset.themeIcon !== mode);
     });
+    if (label) label.textContent = `${mode[0].toUpperCase()}${mode.slice(1)} theme`;
   };
 
   const setMode = (mode: Mode) => {
