@@ -1,0 +1,104 @@
+---
+import Base from "../layouts/Base.astro";
+import Icon from "../components/Icon.astro";
+import DownloadCard from "../components/DownloadCard.astro";
+import { PLATFORMS } from "../data/content";
+
+const desktop = PLATFORMS.filter((p) => p.kind === "Desktop app");
+const mobile = PLATFORMS.filter((p) => p.kind === "Mobile app");
+---
+
+<Base title="Download — Sangria">
+  {/* ── Hero ───────────────────────────────────────────────────────────── */}
+  <section class="relative isolate overflow-hidden">
+    <div
+      class="glow pointer-events-none absolute -top-40 left-1/2 -z-10 h-96 w-[760px] -translate-x-1/2 text-brand-500/20"
+    >
+    </div>
+    <div class="mx-auto max-w-3xl px-6 pt-24 pb-14 text-center">
+      <img
+        src="/icon.svg"
+        alt=""
+        class="mx-auto size-20 rounded-2xl shadow-xl ring-1 ring-black/5 dark:ring-white/10"
+      />
+      <h1 class="mt-6 text-4xl font-bold tracking-tight sm:text-5xl">
+        Get <span class="text-gradient">Sangria</span>
+      </h1>
+      <p class="mx-auto mt-4 max-w-md text-lg text-neutral-600 dark:text-neutral-300">
+        One account, every device — pick up right where you left off.
+      </p>
+      <div class="mt-8 flex flex-col items-center gap-3">
+        <a
+          href="#platforms"
+          class="inline-flex items-center gap-2 rounded-lg bg-brand-600 px-6 py-3 font-semibold text-white shadow-lg shadow-brand-600/20 transition-colors hover:bg-brand-700"
+        >
+          <Icon name="download" class="size-5" />
+          <span data-download-primary>Download</span>
+        </a>
+        <a
+          href="#platforms"
+          class="text-sm text-neutral-500 transition-colors hover:text-neutral-800 dark:hover:text-white"
+        >
+          or choose your platform ↓
+        </a>
+      </div>
+    </div>
+  </section>
+
+  {/* ── Platforms ──────────────────────────────────────────────────────── */}
+  <div
+    id="platforms"
+    class="relative isolate scroll-mt-20 border-y border-neutral-200/70 bg-neutral-50 dark:border-white/5 dark:bg-neutral-900/40"
+  >
+    <div
+      class="glow pointer-events-none absolute -top-16 left-1/2 -z-10 h-56 w-[600px] -translate-x-1/2 text-brand-500/10"
+    >
+    </div>
+    <div class="mx-auto max-w-5xl space-y-12 px-6 py-16">
+      <div>
+        <h2 class="mb-5 text-sm font-semibold uppercase tracking-wide text-neutral-500">Desktop</h2>
+        <div class="grid gap-5 sm:grid-cols-3">
+          {desktop.map((p) => <DownloadCard {...p} />)}
+        </div>
+      </div>
+      <div>
+        <h2 class="mb-5 text-sm font-semibold uppercase tracking-wide text-neutral-500">Mobile</h2>
+        <div class="grid gap-5 sm:grid-cols-2">
+          {mobile.map((p) => <DownloadCard {...p} />)}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  {/* ── Web app ────────────────────────────────────────────────────────── */}
+  <section class="mx-auto max-w-4xl px-6 py-16">
+    <div
+      class="flex flex-col items-center gap-6 rounded-2xl border border-neutral-200/80 bg-white p-8 text-center sm:flex-row sm:text-left dark:border-white/10 dark:bg-neutral-900"
+    >
+      <div
+        class="flex size-14 shrink-0 items-center justify-center rounded-2xl bg-brand-50 text-brand-600 dark:bg-brand-500/10 dark:text-brand-300"
+      >
+        <Icon name="globe" class="size-7" />
+      </div>
+      <div class="flex-1">
+        <h3 class="text-lg font-semibold">Prefer the browser?</h3>
+        <p class="mt-1.5 text-sm text-neutral-600 dark:text-neutral-400">
+          No install needed — Sangria runs as a full web app in any modern browser, with the same
+          account and real-time sync as the native apps.
+        </p>
+        <p class="mt-2 text-xs text-neutral-400">Works in Chrome, Safari, Firefox &amp; Edge.</p>
+      </div>
+      <a
+        href="#"
+        class="inline-flex shrink-0 items-center gap-2 rounded-lg bg-brand-600 px-5 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-brand-700"
+      >
+        <Icon name="globe" class="size-4" />
+        Open in browser
+      </a>
+    </div>
+  </section>
+
+  <script>
+    import "../scripts/os-detect.ts";
+  </script>
+</Base>

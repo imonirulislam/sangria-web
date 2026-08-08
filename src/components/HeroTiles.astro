@@ -1,0 +1,39 @@
+---
+// Scattered rounded tiles that softly pulse at staggered delays — the same
+// "board lighting up" motif as the app's auth screen, adapted to the light hero
+// (brand-tinted). Sits behind the hero content; hidden on mobile.
+import Icon from "./Icon.astro";
+
+// Kept in the upper band (top ≤ ~33%) and out toward the edges, so they frame the
+// headline and clear the product mock below (which sits lower-center).
+const tiles = [
+  { top: "8%", left: "5%", size: "size-12", icon: "message-square", iconSize: "size-5", delay: "0s" },
+  { top: "14%", left: "17%", size: "size-6", icon: "smile", iconSize: "size-3", delay: "1.8s" },
+  { top: "25%", left: "9%", size: "size-8", icon: "hash", iconSize: "size-4", delay: "1.4s" },
+  { top: "33%", left: "6%", size: "size-9", icon: "mic", iconSize: "size-4", delay: "0.6s" },
+  { top: "27%", left: "16%", size: "size-6", icon: "bookmark", iconSize: "size-3", delay: "0.2s" },
+  { top: "4%", left: "35%", size: "size-8", icon: "bell", iconSize: "size-3.5", delay: "0.9s" },
+  { top: "6%", left: "62%", size: "size-7", icon: "search", iconSize: "size-3.5", delay: "1.2s" },
+  { top: "18%", left: "78%", size: "size-6", icon: "bolt", iconSize: "size-3", delay: "0.8s" },
+  { top: "24%", left: "72%", size: "size-6", icon: "at-sign", iconSize: "size-3", delay: "1.6s" },
+  { top: "11%", left: "89%", size: "size-14", icon: "users", iconSize: "size-6", delay: "0.3s" },
+  { top: "30%", left: "84%", size: "size-8", icon: "paperclip", iconSize: "size-4", delay: "1s" },
+  { top: "33%", left: "93%", size: "size-7", icon: "thumbs-up", iconSize: "size-3.5", delay: "0.5s" },
+];
+---
+
+<div class="pointer-events-none absolute inset-0 -z-10 hidden md:block" aria-hidden="true">
+  {
+    tiles.map((t) => (
+      <div
+        class:list={[
+          "absolute flex items-center justify-center rounded-xl border border-brand-500/15 bg-brand-500/[0.05] motion-safe:animate-pulse dark:border-white/10 dark:bg-white/[0.04]",
+          t.size,
+        ]}
+        style={`top:${t.top};left:${t.left};animation-delay:${t.delay}`}
+      >
+        <Icon name={t.icon} class={`${t.iconSize} text-brand-500/40 dark:text-white/30`} />
+      </div>
+    ))
+  }
+</div>

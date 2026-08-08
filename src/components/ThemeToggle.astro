@@ -1,0 +1,90 @@
+---
+import * as simpleIcons from "simple-icons";
+import Icon from "./Icon.astro";
+
+// Brand marks for the "system" icon so it reflects the visitor's actual OS
+// (Windows has no simple-icons logo, so it falls back to a generic monitor).
+const icons = simpleIcons as Record<string, { path: string } | undefined>;
+const apple = icons.siApple?.path ?? "";
+const linux = icons.siLinux?.path ?? "";
+const android = icons.siAndroid?.path ?? "";
+---
+
+<button
+  data-theme-toggle
+  type="button"
+  aria-label="Switch theme (light, dark, system)"
+  title="Theme"
+  class="flex size-9 items-center justify-center rounded-lg text-neutral-600 transition-colors hover:bg-neutral-100 hover:text-neutral-900 dark:text-neutral-300 dark:hover:bg-neutral-800 dark:hover:text-white"
+>
+  <span data-theme-icon="light" class="hidden"><Icon name="sun" class="size-5" /></span>
+  <span data-theme-icon="dark" class="hidden"><Icon name="moon" class="size-5" /></span>
+  {/* System mode: the script reveals the one matching the visitor's OS. */}
+  <span data-theme-icon="system">
+    <span data-os-icon="apple" class="hidden">
+      <svg viewBox="0 0 24 24" class="size-5" fill="currentColor" aria-hidden="true"
+        ><path d={apple} /></svg
+      >
+    </span>
+    <span data-os-icon="linux" class="hidden">
+      <svg viewBox="0 0 24 24" class="size-5" fill="currentColor" aria-hidden="true"
+        ><path d={linux} /></svg
+      >
+    </span>
+    <span data-os-icon="android" class="hidden">
+      <svg viewBox="0 0 24 24" class="size-5" fill="currentColor" aria-hidden="true"
+        ><path d={android} /></svg
+      >
+    </span>
+    <span data-os-icon="other"><Icon name="monitor" class="size-5" /></span>
+  </span>
+</button>
+
+<script>
+  type Mode = "light" | "dark" | "system";
+  const KEY = "theme";
+  const media = window.matchMedia("(prefers-color-scheme: dark)");
+
+  const getMode = (): Mode => (localStorage.getItem(KEY) as Mode) || "system";
+
+  const apply = (mode: Mode) => {
+    const dark = mode === "dark" || (mode === "system" && media.matches);
+    document.documentElement.dataset.theme = dark ? "dark" : "light";
+    document.querySelectorAll<HTMLElement>("[data-theme-icon]").forEach((el) => {
+      el.classList.toggle("hidden", el.dataset.themeIcon !== mode);
+    });
+  };
+
+  const setMode = (mode: Mode) => {
+    localStorage.setItem(KEY, mode);
+    apply(mode);
+  };
+
+  // Pick the OS logo the "system" icon should use.
+  const osKey = (): string => {
+    const ua = navigator.userAgent;
+    const touch = navigator.maxTouchPoints ?? 0;
+    if (/iPhone|iPad|iPod/i.test(ua) || (/Mac/i.test(ua) && touch > 1)) return "apple";
+    if (/Android/i.test(ua)) return "android";
+    if (/Mac/i.test(ua)) return "apple";
+    if (/Linux/i.test(ua)) return "linux";
+    return "other"; // Windows and everything else
+  };
+  const os = osKey();
+  document.querySelectorAll<HTMLElement>("[data-os-icon]").forEach((el) => {
+    el.classList.toggle("hidden", el.dataset.osIcon !== os);
+  });
+
+  apply(getMode());
+
+  document.querySelectorAll<HTMLButtonElement>("[data-theme-toggle]").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      const order: Mode[] = ["light", "dark", "system"];
+      setMode(order[(order.indexOf(getMode()) + 1) % order.length]);
+    });
+  });
+
+  media.addEventListener("change", () => {
+    if (getMode() === "system") apply("system");
+  });
+</script>

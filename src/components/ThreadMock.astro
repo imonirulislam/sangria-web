@@ -1,0 +1,146 @@
+---
+// The app's thread panel: "Thread" header, the parent message, an "N replies"
+// divider, then replies + a composer. Wired for chat-anim.ts (messages arrive,
+// reactions tick). data-at = the message's arrival slot; data-target = final count.
+import Icon from "./Icon.astro";
+import Composer from "./Composer.astro";
+import MockFrame from "./MockFrame.astro";
+
+const parent = {
+  initials: "MW",
+  grad: "from-citrus-400 to-brand-500",
+  name: "Marcus Webb",
+  time: "9:36 AM",
+  text: "Shipped the new onboarding flow to staging — would love eyes before we roll it out 👀",
+  reactions: [
+    { e: "🚀", target: 7, at: 0 },
+    { e: "🔥", target: 2, at: 0 },
+  ],
+};
+
+const replies = [
+  {
+    initials: "AC",
+    grad: "from-brand-500 to-brand-700",
+    name: "Ava Chen",
+    time: "9:41 AM",
+    text: "Looks great on mobile too 🎉",
+    at: 1,
+    reactions: [{ e: "🎉", target: 3, at: 1 }],
+  },
+  {
+    initials: "PN",
+    grad: "from-emerald-400 to-teal-600",
+    name: "Priya Nair",
+    time: "9:44 AM",
+    text: "One nit on the empty state — dropping a comment.",
+    at: 2,
+    reactions: [] as { e: string; target: number; at: number }[],
+  },
+];
+---
+
+<MockFrame>
+  <div class="flex h-[49px] items-center justify-between border-b border-neutral-200 px-4 dark:border-white/10">
+    <div class="flex min-w-0 items-center gap-1.5">
+      <p class="shrink-0 text-lg font-bold">Thread</p>
+      <span class="flex min-w-0 items-center gap-0.5 text-sm text-neutral-500">
+        <span class="text-neutral-400">#</span>
+        <span class="truncate">general</span>
+      </span>
+    </div>
+    <span class="flex size-7 items-center justify-center rounded text-neutral-400">
+      <Icon name="x" class="size-5" />
+    </span>
+  </div>
+
+  <div data-chat class="space-y-4 p-4">
+    {/* parent */}
+    <div data-msg class="msg-pre flex gap-3">
+      <div
+        class:list={[
+          "flex size-9 shrink-0 items-center justify-center rounded-lg bg-gradient-to-br text-sm font-semibold text-white",
+          parent.grad,
+        ]}
+      >
+        {parent.initials}
+      </div>
+      <div class="min-w-0">
+        <div class="flex items-baseline gap-2">
+          <span class="font-semibold">{parent.name}</span>
+          <span class="text-xs text-neutral-400">{parent.time}</span>
+        </div>
+        <p class="mt-0.5 text-sm text-neutral-700 dark:text-neutral-300">{parent.text}</p>
+        <div class="mt-2 flex gap-1.5">
+          {
+            parent.reactions.map((r) => (
+              <span
+                data-react
+                data-target={r.target}
+                data-at={r.at}
+                class="react-pre inline-flex items-center gap-1 rounded-full border border-brand-200 bg-brand-50 px-2 py-0.5 text-xs font-medium text-brand-700 dark:border-brand-400/30 dark:bg-brand-400/10 dark:text-brand-200"
+              >
+                {r.e} <span data-count>{r.target}</span>
+              </span>
+            ))
+          }
+        </div>
+      </div>
+    </div>
+
+    {/* date divider — the thread groups messages by day (like the app) */}
+    <div class="relative my-2 text-center">
+      <hr class="absolute left-0 right-0 top-1/2 border-t border-neutral-200 dark:border-white/10" />
+      <span
+        class="relative inline-block rounded-full border border-neutral-200 bg-white px-4 py-1 text-xs shadow-sm dark:border-white/10 dark:bg-neutral-900"
+      >
+        Thursday, July 9
+      </span>
+    </div>
+
+    {/* replies */}
+    {
+      replies.map((m) => (
+        <div data-msg class="msg-pre flex gap-3">
+          <div
+            class:list={[
+              "flex size-9 shrink-0 items-center justify-center rounded-lg bg-gradient-to-br text-sm font-semibold text-white",
+              m.grad,
+            ]}
+          >
+            {m.initials}
+          </div>
+          <div class="min-w-0">
+            <div class="flex items-baseline gap-2">
+              <span class="font-semibold">{m.name}</span>
+              <span class="text-xs text-neutral-400">{m.time}</span>
+            </div>
+            <p class="mt-0.5 text-sm text-neutral-700 dark:text-neutral-300">{m.text}</p>
+            {m.reactions.length > 0 && (
+              <div class="mt-2 flex gap-1.5">
+                {m.reactions.map((r) => (
+                  <span
+                    data-react
+                    data-target={r.target}
+                    data-at={r.at}
+                    class="react-pre inline-flex items-center gap-1 rounded-full border border-brand-200 bg-brand-50 px-2 py-0.5 text-xs font-medium text-brand-700 dark:border-brand-400/30 dark:bg-brand-400/10 dark:text-brand-200"
+                  >
+                    {r.e} <span data-count>{r.target}</span>
+                  </span>
+                ))}
+              </div>
+            )}
+          </div>
+        </div>
+      ))
+    }
+  </div>
+
+  <div class="px-4 pb-4">
+    <Composer placeholder="Reply…" />
+  </div>
+</MockFrame>
+
+<script>
+  import "../scripts/chat-anim.ts";
+</script>

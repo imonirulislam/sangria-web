@@ -1,18 +1,288 @@
 ---
 import Base from "../layouts/Base.astro";
+import FeatureCard from "../components/FeatureCard.astro";
+import Icon from "../components/Icon.astro";
+import StackStrip from "../components/StackStrip.astro";
+import HeroTiles from "../components/HeroTiles.astro";
+import Faq from "../components/Faq.astro";
+import ChatMock from "../components/ChatMock.astro";
+import ThreadMock from "../components/ThreadMock.astro";
+import HuddleMock from "../components/HuddleMock.astro";
+import PollMock from "../components/PollMock.astro";
+import { SITE, FEATURES, WHY } from "../data/content";
+
+// Honest trust signals — real capabilities of the app, not invented metrics.
+const trust = [
+  { icon: "github", label: "Open source" },
+  { icon: "server", label: "Self-hostable" },
+  { icon: "lock", label: "Passkeys & 2FA" },
+  { icon: "shield", label: "Audit logs" },
+];
 ---
 
 <Base>
-  <main class="mx-auto flex max-w-5xl flex-col items-center px-6 py-28 text-center">
-    <h1 class="text-5xl font-bold tracking-tight sm:text-6xl">Sangria</h1>
-    <p class="mt-5 max-w-xl text-lg text-neutral-600 dark:text-neutral-300">
-      Team chat that feels like home.
-    </p>
-    <a
-      href="#download"
-      class="mt-9 inline-block rounded-lg bg-brand-600 px-6 py-3 font-semibold text-white transition-colors hover:bg-brand-700"
+  {/* ── Hero ───────────────────────────────────────────────────────────── */}
+  <section class="relative isolate overflow-hidden">
+    <div class="pointer-events-none absolute inset-0 -z-10 hero-grid text-neutral-900 dark:text-white">
+    </div>
+    <HeroTiles />
+    <div
+      class="glow pointer-events-none absolute -top-40 left-1/2 -z-10 h-[440px] w-[860px] -translate-x-1/2 text-brand-500/25 dark:text-brand-500/25"
     >
-      Get started
-    </a>
-  </main>
+    </div>
+    <div
+      class="glow pointer-events-none absolute top-16 right-4 -z-10 size-80 text-citrus-500/25"
+    >
+    </div>
+
+    <div class="mx-auto max-w-6xl px-6 pt-20 pb-16 text-center sm:pt-28">
+      <span
+        class="rise inline-flex items-center gap-2 rounded-full border border-brand-200 bg-white/60 px-3.5 py-1.5 text-sm font-medium text-brand-700 backdrop-blur dark:border-brand-400/30 dark:bg-white/5 dark:text-brand-200"
+      >
+        <span class="size-1.5 rounded-full bg-citrus-500"></span>
+        Open team chat, self-hostable
+      </span>
+
+      <h1 class="rise mx-auto mt-6 max-w-3xl text-5xl font-bold tracking-tight sm:text-7xl">
+        Where your team <span class="text-gradient">actually</span> talks.
+      </h1>
+
+      <p
+        class="rise mx-auto mt-6 max-w-xl text-lg text-neutral-600 dark:text-neutral-300"
+        style="animation-delay:.1s"
+      >
+        {SITE.description}
+      </p>
+
+      <div
+        class="rise mt-9 flex flex-wrap items-center justify-center gap-3"
+        style="animation-delay:.18s"
+      >
+        <a
+          data-download-primary
+          href="/download"
+          class="rounded-lg bg-brand-600 px-6 py-3 font-semibold text-white shadow-lg shadow-brand-600/20 transition-colors hover:bg-brand-700"
+        >
+          Get started
+        </a>
+        <a
+          href="/features"
+          class="rounded-lg border border-neutral-300 bg-white/60 px-6 py-3 font-semibold text-neutral-800 backdrop-blur transition-colors hover:bg-white dark:border-neutral-700 dark:bg-white/5 dark:text-neutral-100 dark:hover:bg-white/10"
+        >
+          See features
+        </a>
+      </div>
+
+      <div class="rise relative mx-auto mt-16 max-w-5xl" style="animation-delay:.28s">
+        <div
+          class="glow pointer-events-none absolute -inset-x-10 -bottom-10 top-10 -z-10 text-brand-500/25"
+        >
+        </div>
+        <ChatMock />
+      </div>
+    </div>
+  </section>
+
+  {/* ── Trust bar ──────────────────────────────────────────────────────── */}
+  <section class="mx-auto max-w-4xl px-6 pt-6 pb-2">
+    <div
+      class="reveal flex flex-wrap items-center justify-center gap-x-8 gap-y-3 text-sm font-medium text-neutral-500 dark:text-neutral-400"
+    >
+      {
+        trust.map((b) => (
+          <span class="flex items-center gap-2">
+            <Icon name={b.icon} class="size-4 text-brand-500 dark:text-brand-400" />
+            {b.label}
+          </span>
+        ))
+      }
+    </div>
+  </section>
+
+  {/* ── Features ───────────────────────────────────────────────────────── */}
+  <div
+    class="relative isolate border-y border-neutral-200/70 bg-neutral-50 dark:border-white/5 dark:bg-neutral-900/40"
+  >
+    <div
+      class="glow pointer-events-none absolute -top-20 left-1/2 -z-10 h-64 w-[680px] -translate-x-1/2 text-brand-500/10"
+    >
+    </div>
+    <section class="mx-auto max-w-6xl px-6 py-24">
+    <div class="reveal mx-auto max-w-2xl text-center">
+      <h2 class="text-3xl font-bold tracking-tight sm:text-4xl">
+        Everything your team needs to talk
+      </h2>
+      <p class="mt-4 text-neutral-600 dark:text-neutral-400">
+        The essentials, done well — and a few things that make the day smoother.
+      </p>
+    </div>
+    <div class="reveal mt-14 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+      <FeatureCard {...FEATURES[0]} class="sm:col-span-2 lg:col-span-2">
+        <div class="mt-5 flex flex-wrap gap-2">
+          {
+            ["# general", "# design", "# engineering", "🔒 leadership", "📣 announcements"].map(
+              (c) => (
+                <span class="rounded-md bg-neutral-100 px-2 py-1 text-xs font-medium text-neutral-600 dark:bg-white/5 dark:text-neutral-300">
+                  {c}
+                </span>
+              ),
+            )
+          }
+        </div>
+      </FeatureCard>
+
+      <FeatureCard {...FEATURES[1]} />
+      <FeatureCard {...FEATURES[2]} />
+      <FeatureCard {...FEATURES[3]} />
+      <FeatureCard {...FEATURES[4]} />
+
+      <FeatureCard {...FEATURES[5]} class="sm:col-span-2 lg:col-span-2">
+        <div
+          class="mt-5 flex items-center gap-2 rounded-lg border border-neutral-200 px-3 py-2 text-xs text-neutral-500 dark:border-white/10"
+        >
+          <Icon name="search" class="size-3.5 shrink-0" />
+          <span
+            class="rounded bg-sky-500/15 px-1.5 py-0.5 font-medium text-sky-700 dark:text-sky-300"
+            >in: #engineering</span
+          >
+          <span>deploy</span>
+        </div>
+      </FeatureCard>
+
+      <FeatureCard {...FEATURES[6]} />
+
+      <FeatureCard {...FEATURES[7]} class="sm:col-span-2 lg:col-span-3">
+        <div class="mt-5 flex flex-wrap items-center gap-x-5 gap-y-2 text-xs text-neutral-500">
+          {
+            [
+              { keys: ["⌘", "K"], label: "Quick switcher" },
+              { keys: ["⌘", "/"], label: "Shortcuts" },
+              { keys: ["⌘", "⇧", "K"], label: "Jump to DMs" },
+            ].map((s) => (
+              <span class="flex items-center gap-1.5">
+                <span class="flex gap-1">
+                  {s.keys.map((k) => (
+                    <kbd class="rounded border border-neutral-200 bg-neutral-100 px-1.5 py-0.5 font-mono text-[11px] text-neutral-600 dark:border-white/10 dark:bg-white/10 dark:text-neutral-300">
+                      {k}
+                    </kbd>
+                  ))}
+                </span>
+                {s.label}
+              </span>
+            ))
+          }
+        </div>
+      </FeatureCard>
+    </div>
+  </section>
+  </div>
+
+  {/* ── Showcase ───────────────────────────────────────────────────────── */}
+  <section class="mx-auto max-w-6xl space-y-32 px-6 py-24">
+    <div class="reveal grid items-center gap-10 lg:grid-cols-2">
+      <div>
+        <h3 class="text-2xl font-bold tracking-tight sm:text-3xl">Every conversation, organized</h3>
+        <p class="mt-4 text-lg text-neutral-600 dark:text-neutral-400">
+          Channels for teams and topics, threads to keep side chats tidy, and announcement channels
+          when you just need to broadcast.
+        </p>
+      </div>
+      <div><ThreadMock /></div>
+    </div>
+
+    <div class="reveal grid items-center gap-10 lg:grid-cols-2">
+      <div class="lg:order-2">
+        <h3 class="text-2xl font-bold tracking-tight sm:text-3xl">Talk it out in a huddle</h3>
+        <p class="mt-4 text-lg text-neutral-600 dark:text-neutral-400">
+          Start a live audio & video huddle in any channel or DM, share your screen, and jump out
+          just as fast. No links, no scheduling.
+        </p>
+      </div>
+      <div class="lg:order-1"><HuddleMock /></div>
+    </div>
+
+    <div class="reveal grid items-center gap-10 lg:grid-cols-2">
+      <div>
+        <h3 class="text-2xl font-bold tracking-tight sm:text-3xl">Decide together with polls</h3>
+        <p class="mt-4 text-lg text-neutral-600 dark:text-neutral-400">
+          Run a quick /poll — multiple choice, anonymous voting, live results, and auto-close when
+          the window's up.
+        </p>
+      </div>
+      <div><PollMock /></div>
+    </div>
+  </section>
+
+  {/* ── Why Sangria ────────────────────────────────────────────────────── */}
+  <section class="mx-auto max-w-6xl px-6 py-24">
+    <div class="reveal mx-auto max-w-2xl text-center">
+      <h2 class="text-3xl font-bold tracking-tight sm:text-4xl">Why teams choose Sangria</h2>
+      <p class="mt-4 text-neutral-600 dark:text-neutral-400">
+        Open, portable, and built to get out of your way.
+      </p>
+    </div>
+    <div class="reveal mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+      {WHY.map((w) => <FeatureCard {...w} />)}
+    </div>
+  </section>
+
+  {/* ── FAQ ────────────────────────────────────────────────────────────── */}
+  <section class="mx-auto max-w-6xl px-6 pb-24">
+    <div class="reveal mx-auto max-w-2xl text-center">
+      <h2 class="text-3xl font-bold tracking-tight sm:text-4xl">Questions, answered</h2>
+    </div>
+    <div class="reveal mt-10">
+      <Faq />
+    </div>
+  </section>
+
+  {/* ── Built on ───────────────────────────────────────────────────────── */}
+  <StackStrip />
+
+  {/* ── CTA ────────────────────────────────────────────────────────────── */}
+  <section class="mx-auto max-w-6xl px-6 py-24">
+    <div
+      class="reveal relative isolate overflow-hidden rounded-3xl bg-gradient-to-br from-brand-700 via-brand-800 to-brand-900 px-8 py-20 text-center text-white"
+    >
+      <div class="pointer-events-none absolute inset-0 -z-10 bg-grid text-white opacity-[0.15]"></div>
+      <div
+        class="glow pointer-events-none absolute -top-24 left-1/2 -z-10 h-72 w-[30rem] -translate-x-1/2 text-brand-400/40"
+      >
+      </div>
+      <div
+        class="glow pointer-events-none absolute -bottom-24 left-1/2 -z-10 h-72 w-[30rem] -translate-x-1/2 text-citrus-500/30"
+      >
+      </div>
+      <img
+        src="/icon.svg"
+        alt=""
+        class="relative mx-auto size-14 rounded-2xl shadow-lg ring-1 ring-white/20"
+      />
+      <h2 class="relative mt-6 text-3xl font-bold tracking-tight sm:text-4xl">
+        Bring your team to Sangria
+      </h2>
+      <p class="relative mx-auto mt-3 max-w-lg text-brand-100">
+        Set up a workspace in minutes — free to try on desktop, mobile, and the web.
+      </p>
+      <div class="relative mt-8 flex flex-wrap items-center justify-center gap-3">
+        <a
+          data-download-primary
+          href="/download"
+          class="rounded-lg bg-white px-6 py-3 font-semibold text-brand-700 shadow-lg shadow-black/10 transition-colors hover:bg-brand-50"
+        >
+          Get started
+        </a>
+        <a
+          href="/features"
+          class="rounded-lg border border-white/30 px-6 py-3 font-semibold text-white transition-colors hover:bg-white/10"
+        >
+          See features
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <script>
+    import "../scripts/os-detect.ts";
+  </script>
 </Base>

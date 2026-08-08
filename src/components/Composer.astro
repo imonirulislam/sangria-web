@@ -1,0 +1,49 @@
+---
+// A mock of the app's message composer: the Quill-style formatting toolbar on top
+// and the Aa / emoji / attach / send action row below.
+import Icon from "./Icon.astro";
+
+interface Props {
+  placeholder: string;
+}
+const { placeholder } = Astro.props;
+
+const format = ["bold", "italic", "strikethrough", "link", "list", "list-ordered", "code", "code-block"];
+---
+
+<div class="rounded-md border border-neutral-200 dark:border-white/10">
+  {/* formatting toolbar */}
+  <div
+    class="flex flex-wrap items-center gap-0.5 border-b border-neutral-200 px-1.5 py-1 text-neutral-400 dark:border-white/10"
+  >
+    {
+      format.map((f) => (
+        <span class="flex size-6 items-center justify-center rounded hover:bg-neutral-100 dark:hover:bg-white/5">
+          <Icon name={f} class="size-3.5" />
+        </span>
+      ))
+    }
+  </div>
+
+  {/* text area */}
+  <div class="px-3 py-2.5 text-sm text-neutral-400">{placeholder}</div>
+
+  {/* action row */}
+  <div class="flex items-center justify-between px-2 pb-2">
+    <div class="flex items-center gap-0.5 text-neutral-400">
+      <span
+        class="flex size-7 items-center justify-center rounded text-[13px] font-semibold hover:bg-neutral-100 dark:hover:bg-white/5"
+        >Aa</span
+      >
+      <span class="flex size-7 items-center justify-center rounded hover:bg-neutral-100 dark:hover:bg-white/5">
+        <Icon name="smile" class="size-4" />
+      </span>
+      <span class="flex size-7 items-center justify-center rounded hover:bg-neutral-100 dark:hover:bg-white/5">
+        <Icon name="paperclip" class="size-4" />
+      </span>
+    </div>
+    <span class="flex size-7 items-center justify-center rounded-md bg-brand-600 text-white">
+      <Icon name="send" class="size-3.5" />
+    </span>
+  </div>
+</div>

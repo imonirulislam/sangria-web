@@ -1,16 +1,169 @@
 @import "tailwindcss";
 
-/* Sangria brand palette (wine/burgundy), exposed as Tailwind color utilities
-   like `bg-brand-600` / `text-brand-700`. */
+/* Dark mode is driven by data-theme="dark" on <html> (set by the pre-paint
+   script in Base.astro) so the light/dark/system toggle can override the OS
+   preference — instead of Tailwind's default prefers-color-scheme media query. */
+@custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
+
 @theme {
-  --color-brand-50: #fdf2f6;
-  --color-brand-100: #fbe4ec;
-  --color-brand-200: #f7c9d9;
-  --color-brand-300: #f09fbb;
-  --color-brand-400: #e56894;
-  --color-brand-500: #d43d70;
-  --color-brand-600: #b3245a;
-  --color-brand-700: #8f1a48;
-  --color-brand-800: #77193f;
-  --color-brand-900: #661a39;
+  --font-sans: "Inter Variable", ui-sans-serif, system-ui, sans-serif;
+
+  /* Sangria brand palette — the app's wine/burgundy (icon tile #7C1E3A → #3E0E1D). */
+  --color-brand-50: #fbf0f4;
+  --color-brand-100: #f7dfe7;
+  --color-brand-200: #eec0cf;
+  --color-brand-300: #e096ac;
+  --color-brand-400: #cc6484;
+  --color-brand-500: #b23e63;
+  --color-brand-600: #8f2044;
+  --color-brand-700: #7c1e3a;
+  --color-brand-800: #5f1730;
+  --color-brand-900: #3e0e1d;
+
+  /* Citrus accent from the logo — used in gradients/glows. */
+  --color-citrus-300: #ffd79a;
+  --color-citrus-400: #ffc873;
+  --color-citrus-500: #ffa51f;
+}
+
+/* Headline gradient — brand wine into citrus, the two logo colors. */
+.text-gradient {
+  background-image: linear-gradient(115deg, var(--color-brand-600) 10%, var(--color-citrus-500));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+:where([data-theme="dark"]) .text-gradient {
+  background-image: linear-gradient(115deg, var(--color-brand-300) 10%, var(--color-citrus-400));
+}
+
+/* Faint grid backdrop; `currentColor` lets sections tint it light/dark. */
+.bg-grid {
+  background-image:
+    linear-gradient(to right, color-mix(in srgb, currentColor 7%, transparent) 1px, transparent 1px),
+    linear-gradient(to bottom, color-mix(in srgb, currentColor 7%, transparent) 1px, transparent 1px);
+  background-size: 44px 44px;
+  -webkit-mask-image: radial-gradient(ellipse 80% 60% at 50% 0%, #000 55%, transparent 100%);
+  mask-image: radial-gradient(ellipse 80% 60% at 50% 0%, #000 55%, transparent 100%);
+}
+
+/* Hero variant: same grid, but it stays solid through the upper area and fades
+   out around the middle of the product mock, so the mock reads as emerging from
+   the grid rather than the grid stopping above it. */
+.hero-grid {
+  background-image:
+    linear-gradient(to right, color-mix(in srgb, currentColor 7%, transparent) 1px, transparent 1px),
+    linear-gradient(to bottom, color-mix(in srgb, currentColor 7%, transparent) 1px, transparent 1px);
+  background-size: 44px 44px;
+  -webkit-mask-image: linear-gradient(to bottom, #000 0%, #000 56%, transparent 92%);
+  mask-image: linear-gradient(to bottom, #000 0%, #000 56%, transparent 92%);
+}
+
+/* A soft radial glow blob (place absolutely, give it a color via text-*). */
+.glow {
+  background: radial-gradient(closest-side, currentColor, transparent);
+  filter: blur(8px);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  /* On-load entrance for above-the-fold (hero) elements. */
+  @keyframes rise {
+    from {
+      opacity: 0;
+      transform: translateY(18px);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+  .rise {
+    animation: rise 0.7s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+  }
+
+  /* Scroll-reveal for below-the-fold sections (toggled by reveal.ts). */
+  .reveal {
+    opacity: 0;
+    transform: translateY(22px);
+    transition:
+      opacity 0.6s ease,
+      transform 0.6s cubic-bezier(0.2, 0.7, 0.2, 1);
+  }
+  .reveal.in {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* Poll mock — fill bars + leader highlight, driven by poll-anim.ts. */
+[data-opt] {
+  transition:
+    border-color 0.4s ease,
+    background-color 0.4s ease;
+}
+[data-opt] [data-bar] {
+  transition: width 0.55s cubic-bezier(0.2, 0.7, 0.2, 1);
+  background-color: color-mix(in srgb, var(--color-brand-500) 10%, transparent);
+}
+[data-opt].is-lead {
+  border-color: var(--color-brand-500);
+  background-color: color-mix(in srgb, var(--color-brand-500) 6%, transparent);
+}
+[data-opt].is-lead [data-bar] {
+  background-color: color-mix(in srgb, var(--color-brand-500) 20%, transparent);
+}
+
+/* Huddle mock — a speaking ring that cycles between participants. */
+@media (prefers-reduced-motion: no-preference) {
+  @keyframes speak {
+    0%,
+    18% {
+      box-shadow:
+        0 0 0 2px #10b981,
+        0 0 20px rgba(16, 185, 129, 0.45);
+    }
+    24%,
+    100% {
+      box-shadow: 0 0 0 0 rgba(16, 185, 129, 0);
+    }
+  }
+  .speaker {
+    animation: speak 7.5s linear infinite;
+  }
+
+  /* Chat/thread mocks — messages arrive and reactions pop (driven by chat-anim.ts). */
+  .msg-pre {
+    opacity: 0;
+    transform: translateY(10px);
+    transition:
+      opacity 0.5s ease,
+      transform 0.5s cubic-bezier(0.2, 0.7, 0.2, 1);
+  }
+  .msg-pre.in {
+    opacity: 1;
+    transform: none;
+  }
+  .react-pre {
+    opacity: 0;
+    transform: scale(0.8);
+    transition:
+      opacity 0.3s ease,
+      transform 0.25s cubic-bezier(0.2, 0.7, 0.2, 1);
+  }
+  .react-pre.in {
+    opacity: 1;
+    transform: none;
+  }
+  @keyframes pop {
+    0%,
+    100% {
+      transform: scale(1);
+    }
+    45% {
+      transform: scale(1.16);
+    }
+  }
+  .pop {
+    animation: pop 0.35s ease;
+  }
 }

@@ -1,0 +1,65 @@
+---
+// Mirrors the app's search results: a token'd query bar and bordered result rows
+// (size-5 avatar, author, context) with the matched term highlighted via <mark>.
+import Icon from "./Icon.astro";
+import MockFrame from "./MockFrame.astro";
+
+const results = [
+  {
+    initials: "KT",
+    grad: "from-sky-400 to-indigo-600",
+    name: "Kenji Tanaka",
+    meta: "#engineering · 2d",
+    html: 'We should <mark class="rounded bg-yellow-200 text-inherit dark:bg-yellow-500/40">deploy</mark> the search reindex during off-peak.',
+  },
+  {
+    initials: "RM",
+    grad: "from-emerald-400 to-teal-600",
+    name: "Ravi Menon",
+    meta: "#engineering · 3d",
+    html: 'The <mark class="rounded bg-yellow-200 text-inherit dark:bg-yellow-500/40">deploy</mark> pipeline is green again 🎉',
+  },
+  {
+    initials: "MW",
+    grad: "from-citrus-400 to-brand-500",
+    name: "Marcus Webb",
+    meta: "#engineering · 5d",
+    html: 'Can we <mark class="rounded bg-yellow-200 text-inherit dark:bg-yellow-500/40">deploy</mark> the v2 gateway this week?',
+  },
+];
+---
+
+<MockFrame bodyClass="p-5">
+  <div
+    class="flex items-center gap-2 rounded-lg border border-neutral-200 px-3 py-2.5 dark:border-white/10"
+  >
+    <Icon name="search" class="size-4 shrink-0 text-neutral-400" />
+    <span
+      class="rounded bg-sky-500/15 px-1.5 py-0.5 text-xs font-medium text-sky-700 dark:text-sky-300"
+      >in: #engineering</span
+    >
+    <span class="text-sm text-neutral-500">deploy</span>
+  </div>
+
+  <div class="mt-4 space-y-2">
+    {
+      results.map((r) => (
+        <div class="flex flex-col gap-1 rounded-lg border border-neutral-200 p-3 dark:border-white/10">
+          <div class="flex items-center gap-2">
+            <span
+              class:list={[
+                "flex size-5 items-center justify-center rounded bg-gradient-to-br text-[9px] font-semibold text-white",
+                r.grad,
+              ]}
+            >
+              {r.initials}
+            </span>
+            <span class="text-sm font-semibold">{r.name}</span>
+            <span class="text-xs text-neutral-400">{r.meta}</span>
+          </div>
+          <p class="text-sm text-neutral-600 dark:text-neutral-300" set:html={r.html} />
+        </div>
+      ))
+    }
+  </div>
+</MockFrame>

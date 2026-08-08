@@ -1,0 +1,131 @@
+---
+import Base from "../layouts/Base.astro";
+import FeatureCard from "../components/FeatureCard.astro";
+import ThreadMock from "../components/ThreadMock.astro";
+import HuddleMock from "../components/HuddleMock.astro";
+import SearchMock from "../components/SearchMock.astro";
+import { FEATURE_DETAILS } from "../data/content";
+
+// Bento layout for the feature grid — spans tile a 3-col grid, and `cols` spreads
+// the bullet list across the wider cards so they don't read empty.
+const layout = [
+  { span: "sm:col-span-2 lg:col-span-2", cols: "sm:grid-cols-2" }, // Channels
+  { span: "", cols: "" }, // Direct messages
+  { span: "", cols: "" }, // Huddles
+  { span: "", cols: "" }, // Threads
+  { span: "", cols: "" }, // Polls
+  { span: "sm:col-span-2 lg:col-span-2", cols: "sm:grid-cols-2" }, // Search
+  { span: "", cols: "" }, // Notifications
+  { span: "sm:col-span-2 lg:col-span-3", cols: "sm:grid-cols-2 lg:grid-cols-4" }, // Fast
+];
+---
+
+<Base title="Features — Sangria">
+  <section class="relative isolate overflow-hidden">
+    <div
+      class="glow pointer-events-none absolute -top-40 left-1/2 -z-10 h-96 w-[820px] -translate-x-1/2 text-brand-500/20"
+    >
+    </div>
+    <div class="mx-auto max-w-6xl px-6 pt-20 pb-10 text-center">
+      <h1 class="text-4xl font-bold tracking-tight sm:text-5xl">
+        Built for the way <span class="text-gradient">teams talk</span>
+      </h1>
+      <p class="mx-auto mt-4 max-w-2xl text-lg text-neutral-600 dark:text-neutral-300">
+        From day-to-day chat to live huddles, Sangria has the pieces your team reaches for — and
+        keeps them fast and out of your way.
+      </p>
+    </div>
+  </section>
+
+  <div
+    class="relative isolate mt-6 border-y border-neutral-200/70 bg-neutral-50 dark:border-white/5 dark:bg-neutral-900/40"
+  >
+    <div
+      class="glow pointer-events-none absolute -top-20 left-1/2 -z-10 h-64 w-[680px] -translate-x-1/2 text-brand-500/10"
+    >
+    </div>
+    <section class="mx-auto max-w-6xl px-6 py-20">
+      <div class="mx-auto mb-12 max-w-2xl text-center">
+        <h2 class="text-3xl font-bold tracking-tight">Everything, in one place</h2>
+        <p class="mt-3 text-neutral-600 dark:text-neutral-400">
+          A quick tour of what Sangria does — with the details that matter.
+        </p>
+      </div>
+      <div class="reveal grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        {
+          FEATURE_DETAILS.map((f, i) => (
+            <FeatureCard
+              icon={f.icon}
+              title={f.title}
+              description={f.description}
+              class={layout[i].span}
+            >
+              <ul
+                class:list={[
+                  "mt-4 text-sm text-neutral-600 dark:text-neutral-400",
+                  layout[i].cols
+                    ? `grid grid-cols-1 gap-x-6 gap-y-1.5 ${layout[i].cols}`
+                    : "space-y-1.5",
+                ]}
+              >
+                {f.bullets.map((b) => (
+                  <li class="flex items-center gap-2">
+                    <span class="size-1.5 shrink-0 rounded-full bg-brand-500/60" />
+                    {b}
+                  </li>
+                ))}
+              </ul>
+            </FeatureCard>
+          ))
+        }
+      </div>
+    </section>
+  </div>
+
+  <section class="mx-auto max-w-6xl space-y-32 px-6 py-24">
+    <div class="reveal grid items-center gap-10 lg:grid-cols-2">
+      <div>
+        <h2 class="text-2xl font-bold tracking-tight">Channels &amp; threads</h2>
+        <p class="mt-3 text-neutral-600 dark:text-neutral-400">
+          Public and private channels keep every team and topic in its own space. Announcement
+          channels let admins broadcast while everyone else reads. Reply in a thread to keep a side
+          conversation from flooding the main channel.
+        </p>
+      </div>
+      <div><ThreadMock /></div>
+    </div>
+
+    <div class="reveal grid items-center gap-10 lg:grid-cols-2">
+      <div class="lg:order-2">
+        <h2 class="text-2xl font-bold tracking-tight">Direct messages &amp; huddles</h2>
+        <p class="mt-3 text-neutral-600 dark:text-neutral-400">
+          Message anyone 1:1 or in a group, with typing indicators and reactions. When chat isn't
+          enough, start a huddle — live audio, video, and screen sharing, right inside the
+          conversation.
+        </p>
+      </div>
+      <div class="lg:order-1"><HuddleMock /></div>
+    </div>
+
+    <div class="reveal grid items-center gap-10 lg:grid-cols-2">
+      <div>
+        <h2 class="text-2xl font-bold tracking-tight">Search, pins &amp; saved items</h2>
+        <p class="mt-3 text-neutral-600 dark:text-neutral-400">
+          Full-text search finds any message or file, filtered by channel or author. Pin the
+          important stuff to a channel, and save messages to your personal Later list with
+          reminders.
+        </p>
+      </div>
+      <div><SearchMock /></div>
+    </div>
+  </section>
+
+  <section class="mx-auto max-w-6xl px-6 pb-24 text-center">
+    <a
+      href="/download"
+      class="inline-block rounded-lg bg-brand-600 px-6 py-3 font-semibold text-white transition-colors hover:bg-brand-700"
+    >
+      Download Sangria
+    </a>
+  </section>
+</Base>

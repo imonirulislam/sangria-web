@@ -1,0 +1,61 @@
+---
+import { SITE, NAV_LINKS } from "../data/content";
+import ThemeToggle from "./ThemeToggle.astro";
+
+const path = Astro.url.pathname;
+const isActive = (href: string) =>
+  href === "/" ? path === "/" : path === href || path.startsWith(href + "/");
+---
+
+<header
+  id="site-nav"
+  class="sticky top-0 z-50 border-b border-transparent transition-[background-color,border-color,box-shadow] duration-300 data-[scrolled]:border-neutral-200/70 data-[scrolled]:bg-white/75 data-[scrolled]:shadow-sm data-[scrolled]:backdrop-blur-lg dark:data-[scrolled]:border-white/10 dark:data-[scrolled]:bg-neutral-950/75"
+>
+  <nav class="mx-auto flex max-w-6xl items-center justify-between px-6 py-3">
+    <a href="/" class="group/logo flex items-center gap-2.5 font-semibold">
+      <img
+        src="/icon.svg"
+        alt=""
+        aria-hidden="true"
+        class="size-8 rounded-lg shadow-sm ring-1 ring-black/5 transition-transform duration-200 group-hover/logo:scale-105 dark:ring-white/10"
+      />
+      <span class="text-lg tracking-tight">{SITE.name}</span>
+    </a>
+
+    <div class="flex items-center gap-1">
+      <div class="mr-1 hidden items-center gap-0.5 sm:flex">
+        {
+          NAV_LINKS.map((link) => (
+            <a
+              href={link.href}
+              class:list={[
+                "rounded-lg px-3 py-2 text-sm font-medium transition-colors",
+                isActive(link.href)
+                  ? "text-brand-700 dark:text-brand-300"
+                  : "text-neutral-600 hover:bg-neutral-100 hover:text-neutral-900 dark:text-neutral-300 dark:hover:bg-white/5 dark:hover:text-white",
+              ]}
+            >
+              {link.label}
+            </a>
+          ))
+        }
+      </div>
+      <ThemeToggle />
+      <a
+        href="/download"
+        class="ml-1 rounded-lg bg-gradient-to-b from-brand-600 to-brand-700 px-4 py-2 text-sm font-semibold text-white shadow-sm shadow-brand-700/25 transition-all duration-200 hover:-translate-y-px hover:shadow-md hover:shadow-brand-700/30"
+      >
+        Download
+      </a>
+    </div>
+  </nav>
+</header>
+
+<script>
+  // The bar is transparent over the hero and gains a blurred, shadowed backdrop
+  // once you scroll — a small premium touch.
+  const nav = document.getElementById("site-nav");
+  const sync = () => nav?.toggleAttribute("data-scrolled", window.scrollY > 8);
+  sync();
+  window.addEventListener("scroll", sync, { passive: true });
+</script>

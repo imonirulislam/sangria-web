@@ -1,5 +1,8 @@
 ---
+import "@fontsource-variable/inter";
 import "../styles/global.css";
+import Nav from "../components/Nav.astro";
+import Footer from "../components/Footer.astro";
 
 interface Props {
   title?: string;
@@ -10,6 +13,9 @@ const {
   title = "Sangria — team chat that feels like home",
   description = "Channels, DMs, huddles, threads, and more — the team chat app your whole company will actually enjoy using.",
 } = Astro.props;
+
+const canonical = new URL(Astro.url.pathname, Astro.site);
+const ogImage = new URL("/apple-icon.png", Astro.site);
 ---
 
 <!doctype html>
@@ -17,13 +23,45 @@ const {
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="generator" content={Astro.generator} />
+    <link rel="icon" href="/favicon.ico" sizes="any" />
+    <link rel="icon" href="/icon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/apple-icon.png" />
+    <link rel="canonical" href={canonical} />
     <title>{title}</title>
     <meta name="description" content={description} />
+
+    {/* Open Graph / Twitter — how the link previews when shared. */}
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Sangria" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogImage} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImage} />
+    {/* Set the theme before first paint so there's no light/dark flash. */}
+    <script is:inline>
+      (function () {
+        const saved = localStorage.getItem("theme") || "system";
+        const dark =
+          saved === "dark" ||
+          (saved === "system" && window.matchMedia("(prefers-color-scheme: dark)").matches);
+        document.documentElement.dataset.theme = dark ? "dark" : "light";
+      })();
+    </script>
   </head>
   <body
-    class="min-h-screen bg-white text-neutral-900 antialiased dark:bg-neutral-950 dark:text-neutral-100"
+    class="flex min-h-screen flex-col bg-white text-neutral-900 antialiased dark:bg-neutral-950 dark:text-neutral-100"
   >
-    <slot />
+    <Nav />
+    <main class="flex-1">
+      <slot />
+    </main>
+    <Footer />
+    <script>
+      import "../scripts/reveal.ts";
+    </script>
   </body>
 </html>

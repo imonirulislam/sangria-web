@@ -1,0 +1,40 @@
+---
+// "Built on a modern stack" — real brand marks from simple-icons (build-time
+// only, nothing ships to the client), rendered monochrome via currentColor.
+import * as simpleIcons from "simple-icons";
+import { STACK } from "../data/content";
+
+const ICON: Record<string, string> = {
+  "Next.js": "siNextdotjs",
+  React: "siReact",
+  Convex: "siConvex",
+  LiveKit: "siLivekit",
+  "Tailwind CSS": "siTailwindcss",
+  TypeScript: "siTypescript",
+  Electron: "siElectron",
+  Capacitor: "siCapacitor",
+};
+
+const icons = simpleIcons as Record<string, { path: string } | undefined>;
+const items = STACK.map((name) => ({ name, path: icons[ICON[name]]?.path ?? null }));
+---
+
+<section class="mx-auto max-w-6xl px-6 py-16 text-center">
+  <p class="text-xs font-semibold uppercase tracking-widest text-neutral-400">
+    Built on a modern stack
+  </p>
+  <div class="mt-7 flex flex-wrap items-center justify-center gap-2.5">
+    {
+      items.map((t) => (
+        <span class="flex items-center gap-2 rounded-full border border-neutral-200 px-3.5 py-1.5 text-sm font-medium text-neutral-600 transition-colors hover:border-neutral-300 hover:text-neutral-900 dark:border-white/10 dark:text-neutral-300 dark:hover:border-white/20 dark:hover:text-white">
+          {t.path && (
+            <svg viewBox="0 0 24 24" class="size-4 shrink-0" fill="currentColor" aria-hidden="true">
+              <path d={t.path} />
+            </svg>
+          )}
+          {t.name}
+        </span>
+      ))
+    }
+  </div>
+</section>

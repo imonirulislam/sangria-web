@@ -1,9 +1,12 @@
 import { defineConfig } from "astro/config";
 import tailwindcss from "@tailwindcss/vite";
+import sitemap from "@astrojs/sitemap";
 
-// Tailwind v4 is wired through its Vite plugin (not the legacy @astrojs/tailwind
-// integration); tokens live in src/styles/global.css via @theme.
+// NOTE: set `site` to the real production domain — canonical URLs, og:url, and
+// the generated sitemap are all derived from it.
 export default defineConfig({
+  site: "https://sangria.chat",
+  integrations: [sitemap()],
   vite: {
     plugins: [tailwindcss()],
   },

@@ -1,0 +1,16 @@
+---
+// A clean, chrome-less panel for the product mockups — a thin hairline border and
+// one large, soft shadow so the UI reads as a premium floating product shot.
+interface Props {
+  bodyClass?: string;
+}
+const { bodyClass = "" } = Astro.props;
+---
+
+<div
+  class="overflow-hidden rounded-2xl border border-neutral-200/80 bg-white shadow-[0_28px_70px_-28px_rgba(24,24,27,0.28)] dark:border-white/10 dark:bg-neutral-900 dark:shadow-[0_28px_70px_-28px_rgba(0,0,0,0.75)]"
+>
+  <div class:list={["bg-white dark:bg-neutral-900", bodyClass]}>
+    <slot />
+  </div>
+</div>

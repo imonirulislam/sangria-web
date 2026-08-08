@@ -1,0 +1,27 @@
+---
+import Icon from "./Icon.astro";
+import type { Feature } from "../data/content";
+
+interface Props extends Feature {
+  class?: string;
+}
+const { icon, title, description, class: cls = "" } = Astro.props;
+---
+
+<div
+  class:list={[
+    "rounded-2xl border border-neutral-200/80 bg-white p-6 transition-colors duration-200 hover:border-neutral-300 dark:border-white/10 dark:bg-neutral-900 dark:hover:border-white/20",
+    cls,
+  ]}
+>
+  <div
+    class="mb-4 flex size-10 items-center justify-center rounded-xl bg-brand-50 text-brand-600 dark:bg-brand-500/10 dark:text-brand-300"
+  >
+    <Icon name={icon} class="size-5" />
+  </div>
+  <h3 class="text-base font-semibold">{title}</h3>
+  <p class="mt-1.5 text-sm leading-relaxed text-neutral-600 dark:text-neutral-400">
+    {description}
+  </p>
+  <slot />
+</div>

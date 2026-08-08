@@ -1,0 +1,98 @@
+---
+// The app's poll card (mirrors poll-card.tsx), shown in a channel with a lead-in
+// message. Animated as a live vote by poll-anim.ts: bars grow, counts tick, the
+// leader (border + trophy) shifts, then it loops.
+import Icon from "./Icon.astro";
+import MockFrame from "./MockFrame.astro";
+
+const options = [
+  { text: "Lisbon", weight: 0.5, final: 14 },
+  { text: "Barcelona", weight: 0.32, final: 7 },
+  { text: "Amsterdam", weight: 0.18, final: 3 },
+];
+---
+
+<MockFrame>
+  {/* channel header */}
+  <div
+    class="flex items-center gap-1.5 border-b border-neutral-200 px-5 py-3 font-semibold dark:border-white/10"
+  >
+    <span class="text-neutral-400">#</span> offsite-planning
+  </div>
+
+  <div class="space-y-5 p-5">
+    {/* lead-in message */}
+    <div class="flex gap-3">
+      <div
+        class="flex size-9 shrink-0 items-center justify-center rounded-lg bg-gradient-to-br from-brand-500 to-brand-700 text-sm font-semibold text-white"
+      >
+        AC
+      </div>
+      <div class="min-w-0">
+        <div class="flex items-baseline gap-2">
+          <span class="font-semibold">Ava Chen</span>
+          <span class="text-xs text-neutral-400">9:30 AM</span>
+        </div>
+        <p class="mt-0.5 text-sm text-neutral-700 dark:text-neutral-300">
+          Let's lock the offsite location — vote below! 👇
+        </p>
+      </div>
+    </div>
+
+    {/* bot poll */}
+    <div class="flex gap-3">
+      <img src="/icon.svg" alt="" class="size-9 shrink-0 rounded-lg" />
+      <div class="min-w-0 flex-1">
+        <div class="flex items-center gap-2">
+          <span class="font-semibold">Sangriabot</span>
+          <span
+            class="rounded bg-neutral-100 px-1 text-[10px] font-semibold uppercase tracking-wide text-neutral-500 dark:bg-white/10"
+            >App</span
+          >
+          <span class="text-xs text-neutral-400">9:31 AM</span>
+        </div>
+
+        <div
+          data-poll
+          class="mt-2 flex max-w-md flex-col gap-2 rounded-lg border border-neutral-200 bg-neutral-50 p-3 dark:border-white/10 dark:bg-neutral-800/40"
+        >
+          <p class="text-sm font-bold">Where should we go for the team offsite?</p>
+
+          <div class="flex flex-col gap-1.5">
+            {
+              options.map((o) => (
+                <div
+                  data-opt
+                  data-weight={o.weight}
+                  data-final={o.final}
+                  class="relative flex items-center gap-2 overflow-hidden rounded-md border border-neutral-200 px-2.5 py-1.5 text-left text-sm dark:border-white/10"
+                >
+                  <div data-bar class="absolute inset-y-0 left-0" style="width:0%" />
+                  <span class="relative flex size-4 shrink-0 rounded-full border border-neutral-400" />
+                  <span class="relative min-w-0 flex-1 truncate font-medium">{o.text}</span>
+                  <span data-trophy class="relative hidden">
+                    <Icon name="trophy" class="size-3.5 text-brand-600 dark:text-brand-300" />
+                  </span>
+                  <span data-count class="relative shrink-0 text-xs text-neutral-500">
+                    0 · 0%
+                  </span>
+                </div>
+              ))
+            }
+          </div>
+
+          <div class="flex items-center justify-between text-xs text-neutral-500">
+            <span><span data-total>0 votes</span> · Anonymous poll</span>
+            <span class="flex items-center gap-1.5">
+              <span class="size-1.5 animate-pulse rounded-full bg-emerald-500"></span> Live
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</MockFrame>
+
+<script>
+  import "../scripts/poll-anim.ts";
+</script>
