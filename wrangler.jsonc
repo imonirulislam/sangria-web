@@ -1,0 +1,11 @@
+{
+  // Static-assets-only Worker: Cloudflare serves the prerendered `dist/` directly
+  // (no server code). `bun run deploy` builds then uploads. Add the custom domain
+  // (sangria.chat) to this Worker in the Cloudflare dashboard after the first deploy.
+  "name": "sangria-web",
+  "compatibility_date": "2025-06-01",
+  "assets": {
+    "directory": "./dist",
+    "not_found_handling": "404-page"
+  }
+}
