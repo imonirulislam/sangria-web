@@ -1,0 +1,16 @@
+@import "tailwindcss";
+
+/* Sangria brand palette (wine/burgundy), exposed as Tailwind color utilities
+   like `bg-brand-600` / `text-brand-700`. */
+@theme {
+  --color-brand-50: #fdf2f6;
+  --color-brand-100: #fbe4ec;
+  --color-brand-200: #f7c9d9;
+  --color-brand-300: #f09fbb;
+  --color-brand-400: #e56894;
+  --color-brand-500: #d43d70;
+  --color-brand-600: #b3245a;
+  --color-brand-700: #8f1a48;
+  --color-brand-800: #77193f;
+  --color-brand-900: #661a39;
+}
