@@ -137,7 +137,7 @@ export const FEATURE_DETAILS: FeatureDetail[] = [
       "Command palette (⌘K)",
       "Global keyboard shortcuts",
       "Optimistic updates",
-      "Light, dark & system themes",
+      "Workspace themes, light & dark",
     ],
   },
 ];

@@ -1,16 +1,26 @@
 ---
-// A clean, chrome-less panel for the product mockups — a thin hairline border and
-// one large, soft shadow so the UI reads as a premium floating product shot.
+// The product-shot shell: a hairline border and one soft shadow. `framed` sets the
+// panel on a strip of the themed app frame, the way the app floats its panels.
 interface Props {
   bodyClass?: string;
+  framed?: boolean;
 }
-const { bodyClass = "" } = Astro.props;
+const { bodyClass = "", framed = false } = Astro.props;
 ---
 
 <div
-  class="overflow-hidden rounded-2xl border border-neutral-200/80 bg-white shadow-[0_28px_70px_-28px_rgba(24,24,27,0.28)] dark:border-white/10 dark:bg-neutral-900 dark:shadow-[0_28px_70px_-28px_rgba(0,0,0,0.75)]"
+  class:list={[
+    "overflow-hidden rounded-2xl border border-neutral-200/80 shadow-[0_28px_70px_-28px_rgba(24,24,27,0.28)] dark:border-white/10 dark:shadow-[0_28px_70px_-28px_rgba(0,0,0,0.75)]",
+    framed ? "mock-frame p-1.5" : "bg-mock-panel",
+  ]}
 >
-  <div class:list={["bg-white dark:bg-neutral-900", bodyClass]}>
+  <div
+    class:list={[
+      "bg-mock-panel text-mock-fg",
+      framed && "overflow-hidden rounded-xl shadow-[0_1px_3px_rgba(0,0,0,0.18)]",
+      bodyClass,
+    ]}
+  >
     <slot />
   </div>
 </div>

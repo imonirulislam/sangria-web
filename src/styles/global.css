@@ -24,6 +24,41 @@
   --color-citrus-300: #ffd79a;
   --color-citrus-400: #ffc873;
   --color-citrus-500: #ffa51f;
+
+  /* App-mock tokens — flip with data-theme via the vars below. */
+  --color-mock-accent: var(--mock-accent);
+  --color-mock-panel: var(--mock-panel);
+  --color-mock-fg: var(--mock-fg);
+  --color-mock-muted: var(--mock-muted);
+  --color-mock-border: var(--mock-border);
+  --color-mock-subtle: var(--mock-subtle);
+  --color-mock-item: rgba(255, 230, 235, 0.8);
+  --color-mock-badge: #d06c8a;
+  --color-mock-on-badge: #16090e;
+}
+
+/* The app's surfaces in the Classic workspace theme; the frame stays themed in both modes. */
+:root {
+  --mock-accent: #8f2044;
+  --mock-panel: #ffffff;
+  --mock-fg: #1d1c1d;
+  --mock-muted: #616061;
+  --mock-border: #e3e3e3;
+  --mock-subtle: #f5f5f5;
+}
+[data-theme="dark"] {
+  --mock-accent: #d06c8a;
+  --mock-panel: #1a1d21;
+  --mock-fg: #e3e4e6;
+  --mock-muted: #9a9ea6;
+  --mock-border: #33363b;
+  --mock-subtle: #222529;
+}
+.mock-frame {
+  background: linear-gradient(180deg, #4a1327, #2f0e1c);
+}
+.mock-list {
+  background: linear-gradient(180deg, #5f1730, #3e0e1d);
 }
 
 /* Headline gradient — brand wine into citrus, the two logo colors. */

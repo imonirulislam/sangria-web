@@ -1,49 +1,73 @@
 ---
-// A mock of the app's message composer: the Quill-style formatting toolbar on top
-// and the Aa / emoji / attach / send action row below.
+// The app's composer: a rounded box with formatting on top and attach / emoji /
+// mention / slash-command buttons beside the accent send. On phones it collapses
+// to a single row, as in the app. `reply` is the thread-pane variant.
 import Icon from "./Icon.astro";
 
 interface Props {
   placeholder: string;
+  variant?: "message" | "reply";
+  channel?: string;
 }
-const { placeholder } = Astro.props;
+const { placeholder, variant = "message", channel = "general" } = Astro.props;
 
-const format = ["bold", "italic", "strikethrough", "link", "list", "list-ordered", "code", "code-block"];
+const format = [
+  { label: "B", class: "font-black" },
+  { label: "I", class: "italic" },
+  { label: "S", class: "line-through" },
+];
+const blocks = ["link", "list", "code"];
+const actions = ["smile", "at-sign", "slash"];
 ---
 
-<div class="rounded-md border border-neutral-200 dark:border-white/10">
-  {/* formatting toolbar */}
-  <div
-    class="flex flex-wrap items-center gap-0.5 border-b border-neutral-200 px-1.5 py-1 text-neutral-400 dark:border-white/10"
-  >
-    {
-      format.map((f) => (
-        <span class="flex size-6 items-center justify-center rounded hover:bg-neutral-100 dark:hover:bg-white/5">
-          <Icon name={f} class="size-3.5" />
+{
+  variant === "reply" ? (
+    <div class="flex flex-col gap-1.5 rounded-xl py-2.5 pr-2 pl-3.5 shadow-[inset_0_0_0_1px_var(--mock-border)]">
+      <div class="h-7 text-sm leading-7 text-mock-muted">{placeholder}</div>
+      <div class="flex items-center gap-2 text-[13px] text-mock-muted">
+        <span class="size-3.5 shrink-0 rounded shadow-[inset_0_0_0_1.5px_var(--mock-muted)]" />
+        <span class="truncate">Also send to #{channel}</span>
+        <span class="flex-1" />
+        <span class="flex h-[30px] w-[34px] shrink-0 items-center justify-center rounded-lg bg-mock-subtle">
+          <Icon name="send" class="size-3.5" />
         </span>
-      ))
-    }
-  </div>
-
-  {/* text area */}
-  <div class="px-3 py-2.5 text-sm text-neutral-400">{placeholder}</div>
-
-  {/* action row */}
-  <div class="flex items-center justify-between px-2 pb-2">
-    <div class="flex items-center gap-0.5 text-neutral-400">
-      <span
-        class="flex size-7 items-center justify-center rounded text-[13px] font-semibold hover:bg-neutral-100 dark:hover:bg-white/5"
-        >Aa</span
-      >
-      <span class="flex size-7 items-center justify-center rounded hover:bg-neutral-100 dark:hover:bg-white/5">
-        <Icon name="smile" class="size-4" />
-      </span>
-      <span class="flex size-7 items-center justify-center rounded hover:bg-neutral-100 dark:hover:bg-white/5">
-        <Icon name="paperclip" class="size-4" />
-      </span>
+      </div>
     </div>
-    <span class="flex size-7 items-center justify-center rounded-md bg-brand-600 text-white">
-      <Icon name="send" class="size-3.5" />
-    </span>
-  </div>
-</div>
+  ) : (
+    <div class="flex items-center gap-1 rounded-2xl p-1.5 text-mock-muted shadow-[inset_0_0_0_1px_var(--mock-border)] sm:flex-col sm:items-stretch sm:gap-0 sm:rounded-xl sm:p-0">
+      <div class="hidden items-center gap-0.5 px-2 pt-1.5 sm:flex">
+        {format.map((f) => (
+          <span class:list={["flex size-7 items-center justify-center rounded-md text-sm", f.class]}>
+            {f.label}
+          </span>
+        ))}
+        <span class="mx-1 h-4 w-px bg-mock-border" />
+        {blocks.map((b) => (
+          <span class="flex size-7 items-center justify-center rounded-md">
+            <Icon name={b} class="size-[15px]" />
+          </span>
+        ))}
+      </div>
+
+      <span class="flex size-9 shrink-0 items-center justify-center rounded-full bg-mock-subtle sm:hidden">
+        <Icon name="plus" class="size-4" />
+      </span>
+      <div class="min-w-0 flex-1 truncate px-2 text-sm leading-10 sm:px-3.5">{placeholder}</div>
+
+      <div class="flex items-center gap-0.5 sm:px-2 sm:pb-2">
+        <span class="hidden size-7 items-center justify-center rounded-full bg-mock-subtle sm:flex">
+          <Icon name="plus" class="size-[15px]" />
+        </span>
+        {actions.map((a) => (
+          <span class="hidden size-[30px] items-center justify-center rounded-md sm:flex">
+            <Icon name={a} class="size-4" />
+          </span>
+        ))}
+        <span class="hidden flex-1 sm:block" />
+        <span class="flex size-9 items-center justify-center rounded-xl bg-mock-accent text-white sm:h-[30px] sm:w-[34px] sm:rounded-lg dark:text-mock-on-badge">
+          <Icon name="send" class="size-[15px]" />
+        </span>
+      </div>
+    </div>
+  )
+}

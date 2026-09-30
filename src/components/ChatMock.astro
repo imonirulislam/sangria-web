@@ -1,251 +1,391 @@
 ---
-// A stylized, static mock of the Sangria chat UI — the hero product shot,
-// rendered in HTML/CSS so it stays crisp at any size (no screenshot needed).
+// The hero product shot: the app shell in the Classic theme, rebuilt in HTML/CSS.
+// One themed frame behind the toolbar, icon rail and gutters, with the channel list
+// and channel as rounded panels floating on it. Phones get the app's phone layout.
 import Icon from "./Icon.astro";
 import Composer from "./Composer.astro";
 
-const navItems = [
-  { icon: "thread", label: "Threads" },
+const rail = [
+  { icon: "home", label: "Home", active: true, badge: null as null | string },
+  { icon: "thread", label: "DMs", active: false, badge: "2" },
+  { icon: "bell", label: "Activity", active: false, badge: "dot" },
+  { icon: "bookmark", label: "Later", active: false, badge: null },
+  { icon: "more-horizontal", label: "More", active: false, badge: null },
+];
+
+const nav = [
+  { icon: "chat-bubble", label: "Threads" },
   { icon: "headphones", label: "Huddles" },
-  { icon: "bookmark", label: "Later" },
+  { icon: "send", label: "Drafts & sent" },
 ];
 
 const channels = [
-  { name: "general", active: true },
-  { name: "announcements", active: false },
-  { name: "engineering", active: false },
+  { name: "general", active: true, unread: false, count: null as null | number, lock: false },
+  { name: "engineering", active: false, unread: true, count: 3, lock: false },
+  { name: "announcements", active: false, unread: false, count: null, lock: false },
+  { name: "leadership", active: false, unread: false, count: null, lock: true },
+  { name: "design", active: false, unread: false, count: null, lock: false },
 ];
+
+const people = {
+  ava: { initials: "AC", color: "bg-[#8a6a55]", name: "Ava Chen" },
+  marcus: { initials: "MW", color: "bg-[#5d6390]", name: "Marcus Webb" },
+  priya: { initials: "PN", color: "bg-[#4f7a68]", name: "Priya Nair" },
+  diego: { initials: "DS", color: "bg-[#9a6a50]", name: "Diego Santos" },
+};
 
 const dms = [
-  { initials: "PN", grad: "from-emerald-400 to-teal-600", name: "Priya Nair", online: true },
-  { initials: "DS", grad: "from-sky-400 to-indigo-600", name: "Diego Santos", online: false },
+  { ...people.priya, online: true, count: 2 },
+  { ...people.diego, online: false, count: null as null | number },
 ];
 
-const tabs = [
-  { icon: "message-square", label: "Messages", active: true },
-  { icon: "paperclip", label: "Files & links", active: false },
-  { icon: "pin", label: "Pins", active: false },
-];
-
-const messages = [
-  {
-    initials: "AC",
-    grad: "from-brand-500 to-brand-700",
-    name: "Ava Chen",
-    time: "9:12 AM",
-    text: "Morning! The Q3 planning doc is open for comments through Friday 📄",
-    reactions: [{ e: "👍", n: 5 }],
-    thread: null as null | string,
-  },
-  {
-    initials: "MW",
-    grad: "from-citrus-400 to-brand-500",
-    name: "Marcus Webb",
-    time: "9:36 AM",
-    text: "Shipped the new onboarding flow to staging — would love eyes before we roll it out 👀",
-    reactions: [
-      { e: "🚀", n: 7 },
-      { e: "🔥", n: 2 },
-    ],
-    thread: "3 replies",
-  },
-];
+const own = "bg-mock-accent/8 text-mock-accent font-black shadow-[inset_0_0_0_1px_var(--mock-accent)]";
+const other = "bg-mock-subtle font-bold shadow-[inset_0_0_0_1px_var(--mock-border)]";
+const mention = "rounded px-1 py-px font-bold bg-mock-accent/8 text-mock-accent";
 ---
 
 <div
-  class="overflow-hidden rounded-2xl border border-neutral-200/80 bg-white shadow-[0_28px_70px_-28px_rgba(24,24,27,0.28)] dark:border-white/10 dark:bg-neutral-900 dark:shadow-[0_28px_70px_-28px_rgba(0,0,0,0.75)]"
+  class="mock-frame overflow-hidden rounded-2xl border border-neutral-200/80 text-left text-mock-fg shadow-[0_28px_70px_-28px_rgba(24,24,27,0.28)] dark:border-white/10 dark:shadow-[0_28px_70px_-28px_rgba(0,0,0,0.75)]"
 >
-  <div class="flex h-[460px] text-left">
-    {/* sidebar */}
-    <aside
-      class="hidden w-60 shrink-0 flex-col overflow-hidden bg-gradient-to-b from-brand-800 to-brand-900 text-brand-100 sm:flex"
-    >
-      <div class="flex items-center gap-2 px-3 py-3 font-semibold text-white">
-        <img src="/icon.svg" alt="" class="size-6 rounded-md" />
-        Acme Inc
+  <div class="flex h-[560px] flex-col sm:h-[660px]">
+    {/* phone: themed top bar over a single panel */}
+    <div class="flex items-center gap-1 px-1 py-2 text-white sm:hidden">
+      <span class="flex size-10 items-center justify-center">
+        <Icon name="arrow-left" class="size-5" />
+      </span>
+      <div class="min-w-0 flex-1">
+        <p class="text-[17px] font-black"># general</p>
+        <p class="truncate text-xs text-mock-item">252 members · 2 in a huddle</p>
       </div>
+      <span class="mr-1 flex size-10 items-center justify-center rounded-xl bg-white/14">
+        <Icon name="headphones" class="size-[18px]" />
+      </span>
+    </div>
 
-      <div class="px-3 pb-3">
-        <div
-          class="flex items-center gap-2 rounded-md bg-white/10 px-2.5 py-1.5 text-xs text-brand-100/70"
+    {/* desktop toolbar: transparent, centred search pill */}
+    <div class="relative hidden h-[46px] shrink-0 items-center justify-center px-3 sm:flex">
+      <div class="absolute left-[84px] hidden items-center gap-0.5 text-mock-item lg:flex">
+        <span class="flex size-[30px] items-center justify-center"><Icon name="arrow-left" class="size-4" /></span>
+        <span class="flex size-[30px] items-center justify-center opacity-50"><Icon name="arrow-right" class="size-4" /></span>
+        <span class="flex size-[30px] items-center justify-center"><Icon name="history" class="size-4" /></span>
+      </div>
+      <div
+        class="flex h-8 w-full max-w-[460px] items-center gap-2.5 rounded-[9px] bg-white/13 px-3 text-sm text-mock-item shadow-[inset_0_0_0_1px_rgba(255,255,255,0.08)]"
+      >
+        <Icon name="search" class="size-[15px]" />
+        <span class="flex-1 truncate">Search Acme Inc</span>
+        <span class="text-xs opacity-80">⌘K</span>
+      </div>
+    </div>
+
+    <div class="flex min-h-0 flex-1 gap-1.5 sm:pr-1.5 sm:pb-1.5">
+      {/* icon rail */}
+      <nav class="hidden w-[72px] shrink-0 flex-col items-center gap-3.5 pt-1 sm:flex">
+        <span
+          class="flex size-[38px] items-center justify-center rounded-[10px] bg-white text-[17px] font-black text-[#1f1a1c] shadow-[0_0_0_2px_rgba(255,255,255,0.35),0_0_0_5px_rgba(255,255,255,0.08)]"
+          >A</span
         >
-          <Icon name="search" class="size-3.5" />
-          Find conversations
-        </div>
-      </div>
-
-      <div class="flex-1 space-y-3 overflow-hidden px-2">
-        <ul class="space-y-0.5">
+        <div class="mt-1.5 flex flex-col items-center gap-2.5">
           {
-            navItems.map((n) => (
-              <li class="flex items-center gap-2 rounded-md px-2 py-1.5 text-sm text-brand-100/80">
-                <Icon name={n.icon} class="size-4 opacity-70" />
-                {n.label}
-              </li>
-            ))
-          }
-        </ul>
-
-        <div>
-          <p class="px-2 pb-1 text-xs font-medium uppercase tracking-wide text-brand-300/70">
-            Channels
-          </p>
-          <ul class="space-y-0.5">
-            {
-              channels.map((c) => (
-                <li
+            rail.map((r) => (
+              <span
+                class:list={[
+                  "flex flex-col items-center gap-[3px] text-[11px] font-bold",
+                  r.active ? "text-white" : "text-mock-item",
+                ]}
+              >
+                <span
                   class:list={[
-                    "flex items-center gap-1.5 rounded-md px-2 py-1.5 text-sm",
-                    c.active ? "bg-white/15 font-medium text-white" : "text-brand-100/80",
+                    "relative flex size-[38px] items-center justify-center rounded-[10px]",
+                    r.active && "bg-white/20",
                   ]}
                 >
-                  <span class="opacity-60">#</span>
-                  {c.name}
-                </li>
-              ))
-            }
-          </ul>
-        </div>
-
-        <div>
-          <p class="px-2 pb-1 text-xs font-medium uppercase tracking-wide text-brand-300/70">
-            Direct messages
-          </p>
-          <ul class="space-y-0.5">
-            {
-              dms.map((d) => (
-                <li class="flex items-center gap-2 rounded-md px-2 py-1 text-sm text-brand-100/80">
-                  <span class="relative">
-                    <span
-                      class:list={[
-                        "flex size-5 items-center justify-center rounded-md bg-gradient-to-br text-[9px] font-semibold text-white",
-                        d.grad,
-                      ]}
-                    >
-                      {d.initials}
+                  <Icon name={r.icon} class="size-[19px]" />
+                  {r.badge === "dot" && (
+                    <span class="absolute top-[7px] right-2 size-2 rounded-full bg-mock-badge" />
+                  )}
+                  {r.badge && r.badge !== "dot" && (
+                    <span class="absolute top-0.5 right-0 flex h-4 min-w-4 items-center justify-center rounded-full bg-mock-badge px-1 text-[10px] font-black text-mock-on-badge">
+                      {r.badge}
                     </span>
-                    <span
-                      class:list={[
-                        "absolute -bottom-0.5 -right-0.5 size-2 rounded-full ring-2 ring-brand-900",
-                        d.online ? "bg-emerald-400" : "bg-neutral-500",
-                      ]}
-                    />
-                  </span>
-                  {d.name}
-                </li>
-              ))
-            }
-          </ul>
-        </div>
-
-        <div>
-          <p class="px-2 pb-1 text-xs font-medium uppercase tracking-wide text-brand-300/70">Apps</p>
-          <ul>
-            <li class="flex items-center gap-2 rounded-md px-2 py-1 text-sm text-brand-100/80">
-              <img src="/icon.svg" alt="" class="size-5 rounded-md" />
-              Sangriabot
-              <span class="rounded bg-white/15 px-1 text-[9px] font-semibold uppercase">App</span>
-            </li>
-          </ul>
-        </div>
-      </div>
-    </aside>
-
-    {/* main */}
-    <div class="flex min-w-0 flex-1 flex-col bg-white dark:bg-neutral-900">
-      {/* channel header */}
-      <div class="flex items-center justify-between border-b border-neutral-200 px-5 py-3 dark:border-white/10">
-        <span class="flex items-center gap-1.5 font-semibold">
-          <span class="text-neutral-400">#</span> general
-        </span>
-        <div class="flex items-center gap-1.5 text-neutral-500 dark:text-neutral-400">
-          <span
-            class="flex items-center gap-1.5 rounded-md border border-neutral-200 px-2 py-1 text-xs font-medium dark:border-white/10"
-          >
-            <Icon name="users" class="size-3.5" /> 252
-          </span>
-          {
-            ["headphones", "bell", "search", "more-vertical"].map((n) => (
-              <span class="flex size-7 items-center justify-center rounded-md border border-neutral-200 dark:border-white/10">
-                <Icon name={n} class="size-4" />
+                  )}
+                </span>
+                {r.label}
               </span>
             ))
           }
         </div>
-      </div>
+        <span class="flex-1"></span>
+        <span class="flex size-9 items-center justify-center rounded-full bg-white/14 text-white">
+          <Icon name="plus" class="size-[17px]" />
+        </span>
+        <span
+          class:list={[
+            "relative mb-3 flex size-[38px] items-center justify-center rounded-[10px] text-[13px] font-bold text-white",
+            people.ava.color,
+          ]}
+        >
+          {people.ava.initials}
+          <span class="absolute -right-[3px] -bottom-[3px] size-3 rounded-full bg-[#2bac76] shadow-[0_0_0_3px_#3d1122]"></span>
+        </span>
+      </nav>
 
-      {/* tabs */}
-      <div class="flex items-center gap-1 border-b border-neutral-200 px-3 dark:border-white/10">
-        {
-          tabs.map((t) => (
-            <span
-              class:list={[
-                "flex items-center gap-1.5 border-b-2 px-2.5 py-2.5 text-sm font-medium",
-                t.active
-                  ? "border-neutral-900 text-neutral-900 dark:border-white dark:text-white"
-                  : "border-transparent text-neutral-400",
-              ]}
-            >
-              <Icon name={t.icon} class="size-4" />
-              {t.label}
-            </span>
-          ))
-        }
-      </div>
+      {/* channel list panel */}
+      <aside
+        class="mock-list hidden w-60 shrink-0 flex-col overflow-hidden rounded-xl text-mock-item shadow-[inset_0_0_0_1px_rgba(255,255,255,0.06)] md:flex lg:w-[264px]"
+      >
+        <div class="flex h-[54px] shrink-0 items-center gap-1.5 pr-2.5 pl-4">
+          <span class="flex flex-1 items-center gap-1.5 text-lg font-black tracking-tight text-white">
+            Acme Inc <Icon name="chevron-down" class="size-3.5" />
+          </span>
+          <span class="flex size-8 items-center justify-center rounded-[9px] bg-white/14 text-white">
+            <Icon name="pencil" class="size-4" />
+          </span>
+        </div>
+        <div class="h-px bg-white/8"></div>
 
-      {/* messages */}
-      <div data-chat class="flex-1 space-y-5 overflow-hidden px-5 py-5">
-        {
-          messages.map((m, i) => (
-            <div data-msg class="msg-pre flex gap-3">
-              <div
-                class:list={[
-                  "flex size-9 shrink-0 items-center justify-center rounded-md bg-gradient-to-br text-sm font-semibold text-white",
-                  m.grad,
-                ]}
-              >
-                {m.initials}
-              </div>
-              <div class="min-w-0">
-                <div class="flex items-baseline gap-2">
-                  <span class="font-semibold">{m.name}</span>
-                  <span class="text-xs text-neutral-400">{m.time}</span>
-                </div>
-                <p class="mt-0.5 text-sm text-neutral-700 dark:text-neutral-300">{m.text}</p>
-                {m.reactions.length > 0 && (
-                  <div class="mt-2 flex gap-1.5">
-                    {m.reactions.map((r) => (
-                      <span
-                        data-react
-                        data-target={r.n}
-                        data-at={i}
-                        class="react-pre inline-flex items-center gap-1 rounded-full border border-brand-200 bg-brand-50 px-2 py-0.5 text-xs font-medium text-brand-700 dark:border-brand-400/30 dark:bg-brand-400/10 dark:text-brand-200"
-                      >
-                        {r.e} <span data-count>{r.n}</span>
-                      </span>
-                    ))}
-                  </div>
-                )}
-                {m.thread && (
-                  <button class="mt-2 flex items-center gap-2 rounded-md border border-transparent p-1 pr-2 transition hover:border-neutral-200 hover:bg-neutral-100/60 dark:hover:border-white/10 dark:hover:bg-white/5">
-                    <span class="flex -space-x-2">
-                      <span class="size-6 rounded-md bg-gradient-to-br from-brand-400 to-brand-600 ring-2 ring-white dark:ring-neutral-900" />
-                      <span class="size-6 rounded-md bg-gradient-to-br from-citrus-400 to-brand-500 ring-2 ring-white dark:ring-neutral-900" />
+        <div class="flex flex-1 flex-col gap-3.5 overflow-hidden px-2 py-2.5 text-[15px]">
+          <ul class="flex flex-col gap-px">
+            {
+              nav.map((n) => (
+                <li class="flex h-[30px] items-center gap-2.5 rounded-[7px] px-2.5">
+                  <Icon name={n.icon} class="size-4" />
+                  {n.label}
+                </li>
+              ))
+            }
+          </ul>
+
+          <div class="flex flex-col gap-px">
+            <p class="flex h-7 items-center gap-1.5 px-2 text-sm font-bold">
+              <svg viewBox="0 0 24 24" class="size-3" fill="currentColor" aria-hidden="true"><path d="M6 8h12l-6 8z"></path></svg>
+              Channels
+            </p>
+            {
+              channels.map((c) => (
+                <span
+                  class:list={[
+                    "flex h-[30px] items-center gap-2.5 rounded-[7px] px-2.5",
+                    c.active && "bg-white/20 font-bold text-white shadow-[inset_0_0_0_1px_rgba(255,255,255,0.1)]",
+                    c.unread && "font-black text-white",
+                  ]}
+                >
+                  {c.lock ? (
+                    <Icon name="lock" class="mx-px size-3.5 opacity-80" />
+                  ) : (
+                    <span class="w-4 text-center opacity-70">#</span>
+                  )}
+                  <span class="flex-1 truncate">{c.name}</span>
+                  {c.count && (
+                    <span class="flex h-[18px] min-w-5 items-center justify-center rounded-full bg-mock-badge px-1.5 text-[11px] font-black text-mock-on-badge">
+                      {c.count}
                     </span>
-                    <span class="text-xs font-bold text-sky-600 dark:text-sky-400">{m.thread}</span>
-                    <span class="text-xs text-neutral-400">Last reply 2h ago</span>
-                  </button>
-                )}
+                  )}
+                </span>
+              ))
+            }
+          </div>
+
+          <div class="flex flex-col gap-px">
+            <p class="flex h-7 items-center gap-1.5 px-2 text-sm font-bold">
+              <svg viewBox="0 0 24 24" class="size-3" fill="currentColor" aria-hidden="true"><path d="M6 8h12l-6 8z"></path></svg>
+              Direct messages
+            </p>
+            {
+              dms.map((d) => (
+                <span
+                  class:list={[
+                    "flex h-[30px] items-center gap-2.5 rounded-[7px] px-2.5",
+                    d.count && "font-black text-white",
+                  ]}
+                >
+                  <span
+                    class:list={[
+                      "relative flex size-5 shrink-0 items-center justify-center rounded-md text-[9px] font-bold text-white",
+                      d.color,
+                    ]}
+                  >
+                    {d.initials}
+                    <span
+                      class:list={[
+                        "absolute -right-[3px] -bottom-[3px] size-[9px] rounded-full shadow-[0_0_0_2px_#541529]",
+                        d.online ? "bg-[#2bac76]" : "border-2 border-mock-item bg-[#541529]",
+                      ]}
+                    />
+                  </span>
+                  <span class="flex-1 truncate">{d.name}</span>
+                  {d.count && (
+                    <span class="flex h-[18px] min-w-5 items-center justify-center rounded-full bg-mock-badge px-1.5 text-[11px] font-black text-mock-on-badge">
+                      {d.count}
+                    </span>
+                  )}
+                </span>
+              ))
+            }
+          </div>
+        </div>
+
+        <div
+          class="m-2 flex items-center gap-2.5 rounded-[10px] bg-black/22 py-2.5 pr-2.5 pl-3 shadow-[inset_0_0_0_1px_rgba(255,255,255,0.08)]"
+        >
+          <span class="size-2.5 shrink-0 rounded-full bg-[#2bac76] shadow-[0_0_0_4px_rgba(43,172,118,0.25)]"></span>
+          <div class="min-w-0 flex-1">
+            <p class="truncate text-[13px] font-bold text-white">Huddle in #design</p>
+            <p class="truncate text-xs">Priya and Diego</p>
+          </div>
+          <span class="rounded-lg bg-white px-3 py-1 text-[13px] font-black text-[#1f1a1c]">Join</span>
+        </div>
+      </aside>
+
+      {/* channel panel */}
+      <main
+        class="flex min-w-0 flex-1 flex-col overflow-hidden rounded-t-[18px] bg-mock-panel shadow-[0_1px_3px_rgba(0,0,0,0.18)] sm:rounded-xl"
+      >
+        <div class="hidden h-[54px] shrink-0 items-center gap-2.5 pr-4 pl-5 sm:flex">
+          <span class="flex shrink-0 items-center gap-1.5 text-lg font-black tracking-tight">
+            <span class="font-bold text-mock-muted">#</span>general
+            <Icon name="chevron-down" class="size-3.5" />
+          </span>
+          <span class="hidden truncate text-[13px] text-mock-muted lg:inline">
+            Company-wide news and chatter
+          </span>
+          <span class="flex-1"></span>
+          <span
+            class="hidden items-center gap-1.5 rounded-lg py-[3px] pr-2 pl-[3px] text-[13px] font-bold shadow-[inset_0_0_0_1px_var(--mock-border)] md:flex"
+          >
+            <span class="flex">
+              {
+                [people.ava, people.marcus, people.priya].map((p, i) => (
+                  <span
+                    class:list={[
+                      "flex size-[22px] items-center justify-center rounded-md text-[9px] text-white shadow-[0_0_0_2px_var(--mock-panel)]",
+                      p.color,
+                      i > 0 && "-ml-[5px]",
+                    ]}
+                  >
+                    {p.initials}
+                  </span>
+                ))
+              }
+            </span>
+            252
+          </span>
+          <span
+            class="flex h-[30px] items-center gap-[7px] rounded-lg px-3 text-[13px] font-bold shadow-[inset_0_0_0_1px_var(--mock-border)]"
+          >
+            <Icon name="headphones" class="size-[15px]" />
+            Huddle
+          </span>
+          <span class="flex size-[30px] items-center justify-center text-mock-muted">
+            <Icon name="more-vertical" class="size-[17px]" />
+          </span>
+        </div>
+
+        <div class="flex shrink-0 gap-[18px] px-5 text-sm shadow-[inset_0_-1px_0_var(--mock-border)]">
+          <span class="flex h-[34px] items-center font-bold shadow-[inset_0_-2px_0_var(--mock-accent)]">Messages</span>
+          <span class="flex h-[34px] items-center text-mock-muted">Files</span>
+          <span class="flex h-[34px] items-center text-mock-muted">Pins · 2</span>
+        </div>
+
+        <div data-chat class="flex min-h-0 flex-1 flex-col justify-end overflow-hidden pt-3.5 text-[15px]">
+          <div class="flex items-center px-4 pb-1.5 sm:px-5">
+            <span class="h-px flex-1 bg-mock-border"></span>
+            <span class="rounded-full px-3 py-1 text-xs font-bold shadow-[inset_0_0_0_1px_var(--mock-border)]">Today</span>
+            <span class="h-px flex-1 bg-mock-border"></span>
+          </div>
+
+          <div data-msg class="msg-pre flex gap-3 px-4 py-2 sm:px-5">
+            <span class:list={["flex size-[38px] shrink-0 items-center justify-center rounded-[9px] text-[13px] font-bold text-white", people.ava.color]}>
+              {people.ava.initials}
+            </span>
+            <div class="flex min-w-0 flex-col gap-[3px]">
+              <p class="flex items-baseline gap-2">
+                <span class="font-black">{people.ava.name}</span>
+                <span class="text-xs text-mock-muted">9:12 AM</span>
+              </p>
+              <p class="leading-normal">Morning! The Q3 planning doc is open for comments through Friday 📄</p>
+              <div class="mt-1 flex gap-1.5">
+                <span data-react data-target="5" data-at="0" class:list={["react-pre flex h-6 items-center gap-[5px] rounded-full px-2 text-xs", own]}>
+                  👍 <span data-count>5</span>
+                </span>
               </div>
             </div>
-          ))
-        }
-      </div>
+          </div>
 
-      {/* composer */}
-      <div class="px-5 pb-5">
-        <Composer placeholder="Message #general" />
-      </div>
+          <div data-msg class="msg-pre relative flex gap-3 bg-mock-subtle/60 px-4 py-2 sm:px-5">
+            <span class:list={["flex size-[38px] shrink-0 items-center justify-center rounded-[9px] text-[13px] font-bold text-white", people.marcus.color]}>
+              {people.marcus.initials}
+            </span>
+            <div class="flex min-w-0 flex-col gap-[3px]">
+              <p class="flex items-baseline gap-2">
+                <span class="font-black">{people.marcus.name}</span>
+                <span class="text-xs text-mock-muted">9:36 AM</span>
+              </p>
+              <p class="leading-normal">
+                Shipped the new onboarding flow to staging — would love eyes before we roll it out 👀
+              </p>
+              <div class="mt-1 flex flex-wrap gap-1.5">
+                <span data-react data-target="7" data-at="1" class:list={["react-pre flex h-6 items-center gap-[5px] rounded-full px-2 text-xs", own]}>
+                  🚀 <span data-count>7</span>
+                </span>
+                <span data-react data-target="2" data-at="1" class:list={["react-pre flex h-6 items-center gap-[5px] rounded-full px-2 text-xs", other]}>
+                  🔥 <span data-count>2</span>
+                </span>
+                <span class:list={["flex h-6 w-[30px] items-center justify-center rounded-full text-mock-muted", other]}>
+                  <Icon name="smile" class="size-3.5" />
+                </span>
+              </div>
+              <span
+                class="mt-1 flex h-[30px] items-center gap-2 self-start rounded-lg bg-mock-panel pr-2.5 pl-1 text-[13px] shadow-[inset_0_0_0_1px_var(--mock-border)]"
+              >
+                <span class="flex">
+                  <span class:list={["flex size-[22px] items-center justify-center rounded-md text-[9px] text-white", people.ava.color]}>AC</span>
+                  <span class:list={["-ml-[5px] flex size-[22px] items-center justify-center rounded-md text-[9px] text-white shadow-[0_0_0_2px_var(--mock-panel)]", people.priya.color]}>PN</span>
+                </span>
+                <span class="font-black text-mock-accent">2 replies</span>
+                <span class="hidden text-mock-muted sm:inline">Last reply 2h ago</span>
+              </span>
+            </div>
+            <div
+              class="absolute -top-4 right-5 hidden gap-0.5 rounded-[10px] bg-mock-panel p-[3px] text-mock-muted shadow-[0_0_0_1px_var(--mock-border),0_4px_12px_rgba(0,0,0,0.08)] md:flex"
+            >
+              <span class="flex size-[30px] items-center justify-center text-[15px]">🚀</span>
+              <span class="flex size-[30px] items-center justify-center text-[15px]">👀</span>
+              <span class="mx-0.5 my-[5px] w-px bg-mock-border"></span>
+              <span class="flex size-[30px] items-center justify-center"><Icon name="chat-bubble" class="size-4" /></span>
+              <span class="flex size-[30px] items-center justify-center"><Icon name="bookmark" class="size-4" /></span>
+              <span class="flex size-[30px] items-center justify-center"><Icon name="more-vertical" class="size-4" /></span>
+            </div>
+          </div>
+
+          <div data-msg class="msg-pre">
+            <div class="flex items-center gap-2.5 px-4 pt-2.5 pb-0.5 sm:px-5">
+              <span class="h-px flex-1 bg-mock-accent"></span>
+              <span class="text-[11px] font-black tracking-[0.06em] text-mock-accent uppercase">New</span>
+            </div>
+            <div class="flex gap-3 px-4 py-2 sm:px-5">
+              <span class:list={["flex size-[38px] shrink-0 items-center justify-center rounded-[9px] text-[13px] font-bold text-white", people.priya.color]}>
+                {people.priya.initials}
+              </span>
+              <div class="flex min-w-0 flex-col gap-[3px]">
+                <p class="flex items-baseline gap-2">
+                  <span class="font-black">{people.priya.name}</span>
+                  <span class="text-xs text-mock-muted">9:48 AM</span>
+                </p>
+                <p class="leading-normal">
+                  Huddle at 11 to walk through it together? <span class={mention}>@Marcus</span>
+                  <span class={mention}>@Ava</span>
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <p class="px-4 pb-1 text-xs text-mock-muted sm:px-5"><span class="font-bold">Diego</span> is typing…</p>
+        <div class="px-3 pb-3 sm:px-4 sm:pb-4">
+          <Composer placeholder="Message #general" />
+        </div>
+      </main>
     </div>
   </div>
 </div>

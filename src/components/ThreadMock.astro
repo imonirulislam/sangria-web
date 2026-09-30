@@ -1,143 +1,110 @@
 ---
-// The app's thread panel: "Thread" header, the parent message, an "N replies"
-// divider, then replies + a composer. Wired for chat-anim.ts (messages arrive,
+// The app's thread pane: 54px header, the parent message, an "N replies" rule,
+// replies and the reply composer. Wired for chat-anim.ts (messages arrive,
 // reactions tick). data-at = the message's arrival slot; data-target = final count.
 import Icon from "./Icon.astro";
 import Composer from "./Composer.astro";
 import MockFrame from "./MockFrame.astro";
 
+type Reaction = { e: string; target: number; at: number; own?: boolean };
+
 const parent = {
   initials: "MW",
-  grad: "from-citrus-400 to-brand-500",
+  color: "bg-[#5d6390]",
   name: "Marcus Webb",
   time: "9:36 AM",
   text: "Shipped the new onboarding flow to staging — would love eyes before we roll it out 👀",
   reactions: [
-    { e: "🚀", target: 7, at: 0 },
+    { e: "🚀", target: 7, at: 0, own: true },
     { e: "🔥", target: 2, at: 0 },
-  ],
+  ] as Reaction[],
 };
 
 const replies = [
   {
     initials: "AC",
-    grad: "from-brand-500 to-brand-700",
+    color: "bg-[#8a6a55]",
     name: "Ava Chen",
     time: "9:41 AM",
     text: "Looks great on mobile too 🎉",
-    at: 1,
-    reactions: [{ e: "🎉", target: 3, at: 1 }],
+    reactions: [{ e: "🎉", target: 3, at: 1 }] as Reaction[],
   },
   {
     initials: "PN",
-    grad: "from-emerald-400 to-teal-600",
+    color: "bg-[#4f7a68]",
     name: "Priya Nair",
     time: "9:44 AM",
     text: "One nit on the empty state — dropping a comment.",
-    at: 2,
-    reactions: [] as { e: string; target: number; at: number }[],
+    reactions: [] as Reaction[],
   },
 ];
+
+const pill = (own?: boolean) =>
+  own
+    ? "bg-mock-accent/8 text-mock-accent font-black shadow-[inset_0_0_0_1px_var(--mock-accent)]"
+    : "bg-mock-subtle font-bold shadow-[inset_0_0_0_1px_var(--mock-border)]";
 ---
 
-<MockFrame>
-  <div class="flex h-[49px] items-center justify-between border-b border-neutral-200 px-4 dark:border-white/10">
-    <div class="flex min-w-0 items-center gap-1.5">
-      <p class="shrink-0 text-lg font-bold">Thread</p>
-      <span class="flex min-w-0 items-center gap-0.5 text-sm text-neutral-500">
-        <span class="text-neutral-400">#</span>
-        <span class="truncate">general</span>
-      </span>
-    </div>
-    <span class="flex size-7 items-center justify-center rounded text-neutral-400">
-      <Icon name="x" class="size-5" />
+<MockFrame framed>
+  <div class="flex h-[54px] items-center gap-2 pr-3 pl-5 shadow-[inset_0_-1px_0_var(--mock-border)]">
+    <span class="text-lg font-black">Thread</span>
+    <span class="flex-1 truncate text-[13px] text-mock-muted">#general</span>
+    <span class="flex size-[30px] items-center justify-center text-mock-muted">
+      <Icon name="x" class="size-4" />
     </span>
   </div>
 
-  <div data-chat class="space-y-4 p-4">
-    {/* parent */}
-    <div data-msg class="msg-pre flex gap-3">
-      <div
-        class:list={[
-          "flex size-9 shrink-0 items-center justify-center rounded-md bg-gradient-to-br text-sm font-semibold text-white",
-          parent.grad,
-        ]}
-      >
-        {parent.initials}
-      </div>
-      <div class="min-w-0">
-        <div class="flex items-baseline gap-2">
-          <span class="font-semibold">{parent.name}</span>
-          <span class="text-xs text-neutral-400">{parent.time}</span>
-        </div>
-        <p class="mt-0.5 text-sm text-neutral-700 dark:text-neutral-300">{parent.text}</p>
-        <div class="mt-2 flex gap-1.5">
-          {
-            parent.reactions.map((r) => (
-              <span
-                data-react
-                data-target={r.target}
-                data-at={r.at}
-                class="react-pre inline-flex items-center gap-1 rounded-full border border-brand-200 bg-brand-50 px-2 py-0.5 text-xs font-medium text-brand-700 dark:border-brand-400/30 dark:bg-brand-400/10 dark:text-brand-200"
-              >
-                {r.e} <span data-count>{r.target}</span>
-              </span>
-            ))
-          }
-        </div>
-      </div>
-    </div>
-
-    {/* date divider — the thread groups messages by day (like the app) */}
-    <div class="relative my-2 text-center">
-      <hr class="absolute left-0 right-0 top-1/2 border-t border-neutral-200 dark:border-white/10" />
-      <span
-        class="relative inline-block rounded-full border border-neutral-200 bg-white px-4 py-1 text-xs shadow-sm dark:border-white/10 dark:bg-neutral-900"
-      >
-        Thursday, July 9
-      </span>
-    </div>
-
-    {/* replies */}
+  <div data-chat class="flex flex-col gap-1 pt-3.5 pb-2 text-[15px]">
     {
-      replies.map((m) => (
-        <div data-msg class="msg-pre flex gap-3">
-          <div
-            class:list={[
-              "flex size-9 shrink-0 items-center justify-center rounded-md bg-gradient-to-br text-sm font-semibold text-white",
-              m.grad,
-            ]}
-          >
-            {m.initials}
-          </div>
-          <div class="min-w-0">
-            <div class="flex items-baseline gap-2">
-              <span class="font-semibold">{m.name}</span>
-              <span class="text-xs text-neutral-400">{m.time}</span>
+      [parent, ...replies].map((m, i) => (
+        <>
+          <div data-msg class="msg-pre flex gap-2.5 px-5 py-1.5">
+            <span
+              class:list={[
+                "flex size-[34px] shrink-0 items-center justify-center rounded-lg text-xs font-bold text-white",
+                m.color,
+              ]}
+            >
+              {m.initials}
+            </span>
+            <div class="flex min-w-0 flex-col gap-0.5">
+              <p class="flex items-baseline gap-2">
+                <span class="font-black">{m.name}</span>
+                <span class="text-xs text-mock-muted">{m.time}</span>
+              </p>
+              <p class="leading-normal">{m.text}</p>
+              {m.reactions.length > 0 && (
+                <div class="mt-1 flex gap-1.5">
+                  {m.reactions.map((r) => (
+                    <span
+                      data-react
+                      data-target={r.target}
+                      data-at={r.at}
+                      class:list={[
+                        "react-pre flex h-6 items-center gap-[5px] rounded-full px-2 text-xs",
+                        pill(r.own),
+                      ]}
+                    >
+                      {r.e} <span data-count>{r.target}</span>
+                    </span>
+                  ))}
+                </div>
+              )}
             </div>
-            <p class="mt-0.5 text-sm text-neutral-700 dark:text-neutral-300">{m.text}</p>
-            {m.reactions.length > 0 && (
-              <div class="mt-2 flex gap-1.5">
-                {m.reactions.map((r) => (
-                  <span
-                    data-react
-                    data-target={r.target}
-                    data-at={r.at}
-                    class="react-pre inline-flex items-center gap-1 rounded-full border border-brand-200 bg-brand-50 px-2 py-0.5 text-xs font-medium text-brand-700 dark:border-brand-400/30 dark:bg-brand-400/10 dark:text-brand-200"
-                  >
-                    {r.e} <span data-count>{r.target}</span>
-                  </span>
-                ))}
-              </div>
-            )}
           </div>
-        </div>
+          {i === 0 && (
+            <div class="flex items-center gap-2.5 px-5 py-2 text-xs font-bold text-mock-muted">
+              {replies.length} replies
+              <span class="h-px flex-1 bg-mock-border" />
+            </div>
+          )}
+        </>
       ))
     }
   </div>
 
   <div class="px-4 pb-4">
-    <Composer placeholder="Reply…" />
+    <Composer placeholder="Reply…" variant="reply" channel="general" />
   </div>
 </MockFrame>
 
