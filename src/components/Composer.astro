@@ -14,9 +14,10 @@ const { placeholder, variant = "message", channel = "general" } = Astro.props;
 const format = [
   { label: "B", class: "font-black" },
   { label: "I", class: "italic" },
+  { label: "U", class: "underline" },
   { label: "S", class: "line-through" },
 ];
-const blocks = ["link", "list", "code"];
+const blocks = ["link", "list-ordered", "list", "code", "code-block"];
 const actions = ["smile", "at-sign", "slash"];
 ---
 
@@ -63,9 +64,13 @@ const actions = ["smile", "at-sign", "slash"];
             <Icon name={a} class="size-4" />
           </span>
         ))}
+        <span class="hidden size-[30px] items-center justify-center rounded-md text-[13px] font-semibold sm:flex">Aa</span>
         <span class="hidden flex-1 sm:block" />
-        <span class="flex size-9 items-center justify-center rounded-xl bg-mock-accent text-white sm:h-[30px] sm:w-[34px] sm:rounded-lg dark:text-mock-on-badge">
+        <span class="flex size-9 items-center justify-center rounded-xl bg-mock-accent text-white sm:h-[30px] sm:w-[34px] sm:rounded-lg sm:rounded-r-none dark:text-mock-on-badge">
           <Icon name="send" class="size-[15px]" />
+        </span>
+        <span class="hidden h-[30px] w-[22px] items-center justify-center rounded-r-lg border-l border-white/25 bg-mock-accent text-white sm:flex dark:border-black/20 dark:text-mock-on-badge">
+          <Icon name="chevron-down" class="size-3.5" />
         </span>
       </div>
     </div>

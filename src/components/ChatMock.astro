@@ -16,7 +16,8 @@ const rail = [
 const nav = [
   { icon: "chat-bubble", label: "Threads" },
   { icon: "headphones", label: "Huddles" },
-  { icon: "send", label: "Drafts & sent" },
+  { icon: "send", label: "Drafts & Sent" },
+  { icon: "contact", label: "Directories" },
 ];
 
 const channels = [
@@ -74,7 +75,7 @@ const mention = "rounded px-1 py-px font-bold bg-mock-accent/8 text-mock-accent"
       >
         <Icon name="search" class="size-[15px]" />
         <span class="flex-1 truncate">Search Acme Inc</span>
-        <span class="text-xs opacity-80">⌘K</span>
+        <span class="text-xs opacity-80">⌘J</span>
       </div>
     </div>
 
@@ -116,9 +117,6 @@ const mention = "rounded px-1 py-px font-bold bg-mock-accent/8 text-mock-accent"
           }
         </div>
         <span class="flex-1"></span>
-        <span class="flex size-9 items-center justify-center rounded-full bg-white/14 text-white">
-          <Icon name="plus" class="size-[17px]" />
-        </span>
         <span
           class:list={[
             "relative mb-3 flex size-[38px] items-center justify-center rounded-[10px] text-[13px] font-bold text-white",
@@ -138,11 +136,18 @@ const mention = "rounded px-1 py-px font-bold bg-mock-accent/8 text-mock-accent"
           <span class="flex flex-1 items-center gap-1.5 text-lg font-black tracking-tight text-white">
             Acme Inc <Icon name="chevron-down" class="size-3.5" />
           </span>
+          <span class="flex size-8 items-center justify-center rounded-[9px] text-white">
+            <Icon name="filter" class="size-4" />
+          </span>
           <span class="flex size-8 items-center justify-center rounded-[9px] bg-white/14 text-white">
             <Icon name="pencil" class="size-4" />
           </span>
         </div>
         <div class="h-px bg-white/8"></div>
+        <div class="mx-2 mt-2.5 flex h-8 items-center gap-2 rounded-[8px] bg-white/8 px-2.5 text-sm shadow-[inset_0_0_0_1px_rgba(255,255,255,0.08)]">
+          <Icon name="search" class="size-3.5" />
+          Find conversations
+        </div>
 
         <div class="flex flex-1 flex-col gap-3.5 overflow-hidden px-2 py-2.5 text-[15px]">
           <ul class="flex flex-col gap-px">
@@ -276,15 +281,21 @@ const mention = "rounded px-1 py-px font-bold bg-mock-accent/8 text-mock-accent"
             <Icon name="headphones" class="size-[15px]" />
             Huddle
           </span>
+          <span class="hidden size-[30px] items-center justify-center rounded-lg text-mock-muted shadow-[inset_0_0_0_1px_var(--mock-border)] md:flex">
+            <Icon name="bell" class="size-[15px]" />
+          </span>
+          <span class="hidden size-[30px] items-center justify-center rounded-lg text-mock-muted shadow-[inset_0_0_0_1px_var(--mock-border)] md:flex">
+            <Icon name="search" class="size-[15px]" />
+          </span>
           <span class="flex size-[30px] items-center justify-center text-mock-muted">
             <Icon name="more-vertical" class="size-[17px]" />
           </span>
         </div>
 
         <div class="flex shrink-0 gap-[18px] px-5 text-sm shadow-[inset_0_-1px_0_var(--mock-border)]">
-          <span class="flex h-[34px] items-center font-bold shadow-[inset_0_-2px_0_var(--mock-accent)]">Messages</span>
-          <span class="flex h-[34px] items-center text-mock-muted">Files</span>
-          <span class="flex h-[34px] items-center text-mock-muted">Pins · 2</span>
+          <span class="flex h-[34px] items-center gap-1.5 font-bold shadow-[inset_0_-2px_0_var(--mock-accent)]"><Icon name="message-square" class="size-3.5" />Messages</span>
+          <span class="flex h-[34px] items-center gap-1.5 text-mock-muted"><Icon name="paperclip" class="size-3.5" />Files &amp; links</span>
+          <span class="flex h-[34px] items-center gap-1.5 text-mock-muted"><Icon name="pin" class="size-3.5" />Pins</span>
         </div>
 
         <div data-chat class="flex min-h-0 flex-1 flex-col justify-end overflow-hidden pt-3.5 text-[15px]">
