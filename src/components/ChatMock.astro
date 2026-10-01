@@ -40,9 +40,9 @@ const dms = [
   { ...people.diego, online: false, count: null as null | number },
 ];
 
-const own = "bg-mock-accent/8 text-mock-accent font-black shadow-[inset_0_0_0_1px_var(--mock-accent)]";
-const other = "bg-mock-subtle font-bold shadow-[inset_0_0_0_1px_var(--mock-border)]";
-const mention = "rounded px-1 py-px font-bold bg-mock-accent/8 text-mock-accent";
+const own = "bg-mock-accent/12 text-mock-accent-ink font-black shadow-[inset_0_0_0_1px_var(--mock-accent)]";
+const other = "bg-mock-subtle font-bold text-mock-muted shadow-[inset_0_0_0_1px_var(--mock-border)]";
+const mention = "rounded px-1 py-px font-bold bg-[var(--mock-mention-bg)] text-mock-accent-ink";
 ---
 
 <div
@@ -343,17 +343,17 @@ const mention = "rounded px-1 py-px font-bold bg-mock-accent/8 text-mock-accent"
                   🔥 <span data-count>2</span>
                 </span>
                 <span class:list={["flex h-6 w-[30px] items-center justify-center rounded-full text-mock-muted", other]}>
-                  <Icon name="smile" class="size-3.5" />
+                  <Icon name="smile-plus" class="size-3.5" />
                 </span>
               </div>
               <span
                 class="mt-1 flex h-[30px] items-center gap-2 self-start rounded-lg bg-mock-panel pr-2.5 pl-1 text-[13px] shadow-[inset_0_0_0_1px_var(--mock-border)]"
               >
                 <span class="flex">
-                  <span class:list={["flex size-[22px] items-center justify-center rounded-md text-[9px] text-white", people.ava.color]}>AC</span>
-                  <span class:list={["-ml-[5px] flex size-[22px] items-center justify-center rounded-md text-[9px] text-white shadow-[0_0_0_2px_var(--mock-panel)]", people.priya.color]}>PN</span>
+                  <span class:list={["flex size-[22px] items-center justify-center rounded-[2px] text-[9px] text-white shadow-[0_0_0_2px_var(--mock-panel)]", people.ava.color]}>A</span>
+                  <span class:list={["-ml-[5px] flex size-[22px] items-center justify-center rounded-[2px] text-[9px] text-white shadow-[0_0_0_2px_var(--mock-panel)]", people.priya.color]}>P</span>
                 </span>
-                <span class="font-black text-mock-accent">2 replies</span>
+                <span class="font-black text-mock-accent-ink">2 replies</span>
                 <span class="hidden text-mock-muted sm:inline">Last reply 2h ago</span>
               </span>
             </div>
@@ -371,8 +371,8 @@ const mention = "rounded px-1 py-px font-bold bg-mock-accent/8 text-mock-accent"
 
           <div data-msg class="msg-pre">
             <div class="flex items-center gap-2.5 px-4 pt-2.5 pb-0.5 sm:px-5">
-              <span class="h-px flex-1 bg-mock-accent"></span>
-              <span class="text-[11px] font-black tracking-[0.06em] text-mock-accent uppercase">New</span>
+              <span class="h-px flex-1 bg-mock-accent-ink"></span>
+              <span class="text-[11px] font-black tracking-[0.06em] text-mock-accent-ink uppercase">New</span>
             </div>
             <div class="flex gap-3 px-4 py-2 sm:px-5">
               <span class:list={["flex size-[38px] shrink-0 items-center justify-center rounded-[9px] text-[13px] font-bold text-white", people.priya.color]}>

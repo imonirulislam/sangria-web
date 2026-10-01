@@ -32,6 +32,7 @@
   --color-mock-muted: var(--mock-muted);
   --color-mock-border: var(--mock-border);
   --color-mock-subtle: var(--mock-subtle);
+  --color-mock-accent-ink: var(--mock-accent-ink);
   --color-mock-item: rgba(255, 230, 235, 0.8);
   --color-mock-badge: #d06c8a;
   --color-mock-on-badge: #16090e;
@@ -45,6 +46,9 @@
   --mock-muted: #616061;
   --mock-border: #e3e3e3;
   --mock-subtle: #f5f5f5;
+  /* Accent text as the app draws it: the raw accent misses 4.5:1 on its own tint. */
+  --mock-accent-ink: color-mix(in srgb, #8f2044 70%, black);
+  --mock-mention-bg: color-mix(in srgb, #8f2044 8%, transparent);
 }
 [data-theme="dark"] {
   --mock-accent: #d06c8a;
@@ -53,6 +57,8 @@
   --mock-muted: #9a9ea6;
   --mock-border: #33363b;
   --mock-subtle: #222529;
+  --mock-accent-ink: color-mix(in srgb, #d06c8a 60%, white);
+  --mock-mention-bg: color-mix(in srgb, #d06c8a 15%, transparent);
 }
 .mock-frame {
   background: linear-gradient(180deg, #4a1327, #2f0e1c);
