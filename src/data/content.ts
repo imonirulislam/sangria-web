@@ -134,7 +134,7 @@ export const FEATURE_DETAILS: FeatureDetail[] = [
     title: "Built for speed",
     description: "A responsive interface designed for keyboard users.",
     bullets: [
-      "Quick switcher (⌘J)",
+      "Search (⌘K) and quick switcher (⌘J)",
       "Global keyboard shortcuts",
       "Optimistic updates",
       "Workspace themes in light and dark mode",
