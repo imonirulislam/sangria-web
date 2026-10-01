@@ -12,14 +12,14 @@ export const NAV_LINKS = [
 
 // What the app is built on — shown as a subtle "built on a modern stack" strip.
 export const STACK = [
-  "Next.js",
-  "React",
-  "Convex",
-  "LiveKit",
-  "Tailwind CSS",
-  "TypeScript",
-  "Electron",
-  "Capacitor",
+  { name: "Next.js", href: "https://nextjs.org" },
+  { name: "React", href: "https://react.dev" },
+  { name: "Convex", href: "https://www.convex.dev" },
+  { name: "LiveKit", href: "https://livekit.io" },
+  { name: "Tailwind CSS", href: "https://tailwindcss.com" },
+  { name: "TypeScript", href: "https://www.typescriptlang.org" },
+  { name: "Electron", href: "https://www.electronjs.org" },
+  { name: "Capacitor", href: "https://capacitorjs.com" },
 ];
 
 export type Feature = { icon: string; title: string; description: string };

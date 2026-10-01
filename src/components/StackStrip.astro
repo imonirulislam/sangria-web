@@ -16,7 +16,7 @@ const ICON: Record<string, string> = {
 };
 
 const icons = simpleIcons as Record<string, { path: string } | undefined>;
-const items = STACK.map((name) => ({ name, path: icons[ICON[name]]?.path ?? null }));
+const items = STACK.map(({ name, href }) => ({ name, href, path: icons[ICON[name]]?.path ?? null }));
 ---
 
 <section class="mx-auto max-w-6xl px-6 py-16 text-center">
@@ -26,14 +26,20 @@ const items = STACK.map((name) => ({ name, path: icons[ICON[name]]?.path ?? null
   <div class="mt-7 flex flex-wrap items-center justify-center gap-2.5">
     {
       items.map((t) => (
-        <span class="flex items-center gap-2 rounded-full border border-neutral-200 px-3.5 py-1.5 text-sm font-medium text-neutral-600 transition-colors hover:border-neutral-300 hover:text-neutral-900 dark:border-white/10 dark:text-neutral-300 dark:hover:border-white/20 dark:hover:text-white">
+        <a
+          href={t.href}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="flex items-center gap-2 rounded-full border border-neutral-200 px-3.5 py-1.5 text-sm font-medium text-neutral-600 transition-colors hover:border-neutral-300 hover:text-neutral-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500/60 dark:border-white/10 dark:text-neutral-300 dark:hover:border-white/20 dark:hover:text-white"
+        >
           {t.path && (
             <svg viewBox="0 0 24 24" class="size-4 shrink-0" fill="currentColor" aria-hidden="true">
               <path d={t.path} />
             </svg>
           )}
           {t.name}
-        </span>
+          <span class="sr-only">(opens in a new tab)</span>
+        </a>
       ))
     }
   </div>
