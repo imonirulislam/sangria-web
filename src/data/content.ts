@@ -1,8 +1,8 @@
 export const SITE = {
   name: "Sangria",
-  tagline: "Team chat that feels like home.",
+  tagline: "Open-source team communication.",
   description:
-    "Channels, DMs, huddles, threads, polls, and search — the team chat app your whole company will actually enjoy using.",
+    "Channels, direct messages, huddles, threads, polls, and search in one secure workspace you can host yourself.",
 };
 
 export const NAV_LINKS = [
@@ -29,51 +29,51 @@ export const FEATURES: Feature[] = [
     icon: "hash",
     title: "Channels",
     description:
-      "Organized spaces for every team, project, and topic — public or private, plus announcement-only channels for broadcasts.",
+      "Dedicated spaces for every team, project, and topic. Channels can be public or private, and announcement channels let administrators broadcast to everyone.",
   },
   {
     icon: "message",
     title: "Direct messages",
     description:
-      "1:1 and group DMs with typing indicators, reactions, and threads — right where the conversation happens.",
+      "One-to-one and group conversations with typing indicators, reactions, and threaded replies.",
   },
   {
     icon: "headphones",
     title: "Huddles",
     description:
-      "Drop into a live audio & video huddle with screen sharing — no meeting link required.",
+      "Start an audio or video call with screen sharing from any channel or conversation, without scheduling or meeting links.",
   },
   {
     icon: "thread",
     title: "Threads",
-    description:
-      "Keep side conversations tidy — reply in a thread and the main channel stays readable.",
+    description: "Reply in a thread to keep focused discussions separate from the main channel.",
   },
   {
     icon: "poll",
     title: "Polls",
-    description: "Ask the room with /poll — multiple choice, anonymous voting, and auto-close.",
+    description:
+      "Create a poll with /poll, with support for multiple choice, anonymous voting, and automatic closing.",
   },
   {
     icon: "search",
     title: "Search",
-    description:
-      "Find any message, file, or person in seconds, with filters by channel and author.",
+    description: "Find messages, files, and people quickly, with filters for channel and author.",
   },
   {
     icon: "bell",
     title: "Notifications",
     description:
-      "Tune what pings you per channel, mute the noisy ones, and pause notifications to focus.",
+      "Set preferences for each channel, mute conversations, and pause notifications when you need to focus.",
   },
   {
     icon: "bolt",
-    title: "Fast & keyboard-first",
-    description: "A command palette, global shortcuts, and a snappy UI that keeps up with you.",
+    title: "Built for speed",
+    description:
+      "A quick switcher, global keyboard shortcuts, and optimistic updates keep the interface responsive.",
   },
 ];
 
-// Richer feature entries for the dedicated Features page — each with a few
+// Richer feature entries for the dedicated Features page, each with a few
 // scannable sub-capabilities.
 export type FeatureDetail = Feature & { bullets: string[] };
 
@@ -81,63 +81,63 @@ export const FEATURE_DETAILS: FeatureDetail[] = [
   {
     icon: "hash",
     title: "Channels",
-    description: "Shared spaces for every team, project, and topic — public or private.",
+    description: "Organized spaces for every team, project, and topic.",
     bullets: [
-      "Announcement (read-only) channels",
-      "Custom sections & drag-to-organize",
-      "Topics, descriptions & channel admins",
+      "Announcement channels for broadcasts",
+      "Custom sections with drag-and-drop ordering",
+      "Topics, descriptions, and channel administrators",
     ],
   },
   {
     icon: "message",
     title: "Direct messages",
-    description: "1:1 and group conversations, right where the work happens.",
-    bullets: ["Typing indicators", "Reactions & threads", "Group DMs"],
+    description: "Private conversations between two or more people.",
+    bullets: ["Typing indicators", "Reactions and threaded replies", "Group conversations"],
   },
   {
     icon: "headphones",
     title: "Huddles",
-    description: "Jump into live audio & video in a single click.",
-    bullets: ["Screen sharing", "No links or scheduling", "In any channel or DM"],
+    description: "Audio and video calls that start in a single click.",
+    bullets: ["Screen sharing", "No scheduling or meeting links", "Available in every channel and conversation"],
   },
   {
     icon: "thread",
     title: "Threads",
-    description: "Keep focused side conversations out of the main flow.",
-    bullets: ["Reply without clutter", "Follow threads you're in", "A dedicated Threads view"],
+    description: "Focused discussions that stay out of the main channel.",
+    bullets: ["Threaded replies", "Follow the threads you take part in", "A dedicated Threads view"],
   },
   {
     icon: "poll",
     title: "Polls",
-    description: "Decide together with a quick /poll.",
-    bullets: ["Multiple choice", "Anonymous voting", "Auto-close & live results"],
+    description: "Structured decisions with /poll.",
+    bullets: ["Multiple-choice questions", "Anonymous voting", "Live results and automatic closing"],
   },
   {
     icon: "search",
     title: "Search",
-    description: "Find any message, file, or person in seconds.",
+    description: "Locate any message, file, or person in seconds.",
     bullets: [
       "Full-text search",
-      "Filter by channel or author",
-      "Files & links index",
-      "Jump straight to the message",
+      "Filters for channel and author",
+      "Files and links index",
+      "Direct links to the original message",
     ],
   },
   {
     icon: "bell",
     title: "Notifications",
-    description: "Tune exactly what reaches you, and when.",
-    bullets: ["Per-channel preferences", "Mute & pause", "Reminders with /remind"],
+    description: "Control which notifications reach you, and when.",
+    bullets: ["Per-channel preferences", "Muting and do not disturb", "Reminders with /remind"],
   },
   {
     icon: "bolt",
-    title: "Fast & keyboard-first",
-    description: "A snappy, considered UI that keeps up with you.",
+    title: "Built for speed",
+    description: "A responsive interface designed for keyboard users.",
     bullets: [
-      "Command palette (⌘K)",
+      "Quick switcher (⌘J)",
       "Global keyboard shortcuts",
       "Optimistic updates",
-      "Workspace themes, light & dark",
+      "Workspace themes in light and dark mode",
     ],
   },
 ];
@@ -145,46 +145,50 @@ export const FEATURE_DETAILS: FeatureDetail[] = [
 export const WHY = [
   {
     icon: "server",
-    title: "Open & self-hostable",
-    description: "Run Sangria on your own infrastructure — it's open source, so your workspace is yours.",
+    title: "Open source and self-hosted",
+    description:
+      "Deploy Sangria on your own infrastructure. The source code is licensed under the GPL-3.0.",
   },
   {
     icon: "shield",
-    title: "Your data, your servers",
-    description: "Self-host and your conversations never leave your systems. No lock-in.",
+    title: "You own your data",
+    description:
+      "When you host Sangria yourself, your conversations stay on your systems, with no vendor lock-in.",
   },
   {
     icon: "monitor",
-    title: "Every platform",
-    description: "Native desktop and mobile apps plus a full web app — one account, always in sync.",
+    title: "Available across platforms",
+    description:
+      "A full web app and a native macOS desktop app, with Windows, Linux, iOS, and Android in development.",
   },
   {
     icon: "bolt",
-    title: "Fast & keyboard-first",
-    description: "A command palette, global shortcuts, and an optimistic UI that never makes you wait.",
+    title: "Built for speed",
+    description:
+      "A quick switcher, keyboard shortcuts, and optimistic updates mean the interface responds immediately.",
   },
 ];
 
 export const FAQ = [
   {
     q: "Is Sangria open source?",
-    a: "Yes. Sangria is open source and self-hostable — run it on your own infrastructure so your workspace and its data stay yours.",
+    a: "Yes. Sangria is released under the GPL-3.0 license and can be self-hosted, so your workspace and its data remain under your control.",
   },
   {
-    q: "What platforms can I use it on?",
-    a: "A full web app plus native apps — the macOS desktop app is available today, with Windows, Linux, iOS, and Android in progress.",
+    q: "Which platforms are supported?",
+    a: "Sangria runs as a full web app in any modern browser. A native desktop app is available for macOS, and apps for Windows, Linux, iOS, and Android are in development.",
   },
   {
     q: "Do I need to install anything?",
-    a: "No — Sangria runs in any modern browser. Install the desktop or mobile apps whenever you want the native experience; it's the same account either way.",
+    a: "No. Sangria works in any modern browser. The desktop app is optional and uses the same account.",
   },
   {
-    q: "Can I move over from another chat tool?",
-    a: "Yes. Sangria includes an importer (for example, from Mattermost) that brings your channels, messages, and history across.",
+    q: "Can I migrate from another chat tool?",
+    a: "Yes. Sangria includes an importer for Mattermost that transfers your channels, messages, and history.",
   },
   {
     q: "How much does it cost?",
-    a: "Because Sangria is open source and self-hostable, you can run it yourself for free — no per-seat pricing, and you control where it lives.",
+    a: "Sangria is free to self-host. There are no per-seat fees, and you decide where it runs.",
   },
 ];
 
@@ -199,8 +203,8 @@ export type Platform = {
   note: string;
 };
 
-// hrefs are placeholders — only the macOS desktop build ships today; the rest
-// are honestly labeled "coming soon" rather than pointing at store URLs that 404.
+// hrefs are placeholders. Only the macOS desktop build ships today; the rest are
+// labeled "coming soon" rather than pointing at store URLs that 404.
 export const PLATFORMS: Platform[] = [
   {
     os: "mac",
@@ -208,7 +212,7 @@ export const PLATFORMS: Platform[] = [
     kind: "Desktop app",
     href: "#",
     available: true,
-    note: "Universal .dmg — Apple silicon & Intel",
+    note: "Universal build for Apple silicon and Intel",
   },
   { os: "windows", name: "Windows", kind: "Desktop app", href: "#", available: false, note: "Coming soon" },
   { os: "linux", name: "Linux", kind: "Desktop app", href: "#", available: false, note: "Coming soon" },
