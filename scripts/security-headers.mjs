@@ -32,11 +32,12 @@ for (const file of await htmlFiles(DIST)) {
 // hash list would block.
 const csp = [
   "default-src 'self'",
-  `script-src 'self' ${[...hashes].sort().join(" ")}`.trim(),
+  // Cloudflare injects its Web Analytics beacon in production only.
+  `script-src 'self' https://static.cloudflareinsights.com ${[...hashes].sort().join(" ")}`.trim(),
   "style-src 'self' 'unsafe-inline'",
   "img-src 'self' data:",
   "font-src 'self'",
-  "connect-src 'self'",
+  "connect-src 'self' https://cloudflareinsights.com",
   "object-src 'none'",
   "base-uri 'self'",
   "form-action 'self'",
